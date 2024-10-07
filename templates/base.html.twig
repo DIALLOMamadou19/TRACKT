@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Task Manager{% endblock %}</title>
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+  </head>
+  <body>
+    {% block body %}{% endblock %}
+    <script src="{{ asset('build/app.js') }}"></script>
+  </body>
+</html>
