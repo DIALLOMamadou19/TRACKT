@@ -5,8 +5,13 @@ module.exports = {
     './assets/**/*.js'
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-yellow': '#FAE150', // Ajoute ta couleur personnalisée ici
+      },
+    },
   },
+  variants: {},
   plugins: [],
 }
 
