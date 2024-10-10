@@ -1,4 +1,29 @@
+{# templates/base.html.twig #}
 <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}My Application{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.0/dist/tailwind.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+  
+    <main>
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="bg-yellow-500 text-black p-4 text-center">
+    <p>&copy; 2024 Starshop. Tous droits réservés.</p>
+</footer>
+
+</body>
+</html>
+
+
+
+{# <!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -9,4 +34,18 @@
     {% block body %}{% endblock %}
     <script src="{{ asset('build/app.js') }}"></script>
   </body>
-</html>
+</html> #}
+
+
+
+{# <!DOCTYPE html>
+<html>
+    <head>
+        <title>Mon Dashboard</title>
+        {{ encore_entry_link_tags('app') }}
+    </head>
+    <body>
+        <div id="root"></div>
+        {{ encore_entry_script_tags('app') }}
+    </body>
+</html> #}

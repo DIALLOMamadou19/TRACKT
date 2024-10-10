@@ -1,0 +1,134 @@
+<!-- Bouton pour ouvrir la modale -->
+<button id="openModal" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+    Créer une nouvelle tâche
+</button>
+
+<!-- La Pop-Up elle-même (Formulaire de création de tâche) -->
+<div id="{{ id }}" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+        <h2 class="text-2xl font-bold mb-4">Créer une nouvelle tâche</h2>
+        
+        <!-- Formulaire -->
+        <form action="{}" method="POST" class="space-y-4">
+            <!-- Titre de la tâche -->
+            <div>
+                <label for="title" class="block text-gray-700">Titre de la tâche</label>
+                <input type="text" id="title" name="title" class="w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            
+            <!-- Date de début -->
+            <div>
+                <label for="start_date" class="block text-gray-700">Date de début</label>
+                <input type="date" id="start_date" name="start_date" class="w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            
+            <!-- Date de fin -->
+            <div>
+                <label for="end_date" class="block text-gray-700">Date de fin</label>
+                <input type="date" id="end_date" name="end_date" class="w-full border border-gray-300 rounded-lg p-2" required>
+            </div>
+            
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-gray-700">Description</label>
+                <textarea id="description" name="description" class="w-full border border-gray-300 rounded-lg p-2" rows="3" required></textarea>
+            </div>
+            
+            <!-- Bouton pour assigner des utilisateurs -->
+            <div>
+                <label for="assignee" class="block text-gray-700">Assigner des utilisateurs</label>
+                <select id="assignee" name="assignees[]" class="w-full border border-gray-300 rounded-lg p-2" multiple>
+                    <!-- Ici tu devrais récupérer les utilisateurs de la base de données -->
+                    {# {% for user in users %}
+                        <option value="{{ user.id }}">{{ user.username }}</option>
+                    {% endfor %} #}
+                </select>
+            </div>
+
+            <!-- Bouton pour valider le formulaire -->
+            <div class="flex justify-end">
+                <button type="submit" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+                    Créer la tâche
+                </button>
+            </div>
+        </form>
+
+        <!-- Bouton pour fermer la pop-up -->
+        <button id="closeModal" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
+            Fermer
+        </button>
+    </div>
+</div>
+
+<!-- JavaScript pour ouvrir et fermer la pop-up -->
+<script>
+    document.getElementById('openModal').addEventListener('click', function() {
+        let modal = document.getElementById('{{ id }}');
+        let body = document.querySelector('body');
+        modal.classList.remove('hidden');
+        modal.classList.add('opacity-100');
+        body.classList.add('blur-background');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+        let modal = document.getElementById('{{ id }}');
+        let body = document.querySelector('body');
+        modal.classList.add('hidden');
+        modal.classList.remove('opacity-100');
+        body.classList.remove('blur-background');
+    });
+</script>
+
+
+<!-- JavaScript pour ouvrir et fermer la pop-up -->
+<script>
+    document.getElementById('openModal').addEventListener('click', function() {
+        let modal = document.getElementById('{{ id }}');
+        let body = document.querySelector('body');
+        modal.classList.remove('hidden');
+        modal.classList.add('opacity-100');
+        body.classList.add('blur-background');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+        let modal = document.getElementById('{{ id }}');
+        let body = document.querySelector('body');
+        modal.classList.add('hidden');
+        modal.classList.remove('opacity-100');
+        body.classList.remove('blur-background');
+    });
+</script>
+
+
+{# <!-- Bouton pour ouvrir la modale -->
+<button id="openModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+    Ouvrir la Pop-Up
+</button>
+
+<!-- La Pop-Up elle-même -->
+<div id="{{ id }}" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-1/3">
+        <h2 class="text-2xl font-bold mb-4">{{ title }}</h2>
+        <p class="text-gray-700">{{ content }}</p>
+        <button id="closeModal" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4">
+            {{ close_label }}
+        </button>
+    </div>
+</div>
+
+<!-- JavaScript pour ouvrir et fermer la pop-up -->
+<script>
+    document.getElementById('openModal').addEventListener('click', function() {
+        let modal = document.getElementById('{{ id }}');
+        modal.classList.remove('hidden');
+        modal.classList.add('opacity-100');
+    });
+
+    document.getElementById('closeModal').addEventListener('click', function() {
+        let modal = document.getElementById('{{ id }}');
+        modal.classList.add('hidden');
+        modal.classList.remove('opacity-100');
+    });
+</script> #}
+
+
