@@ -138,13 +138,25 @@
     <div class="bg-white shadow-md p-6 rounded-lg">
         <h2 class="text-2xl font-bold text-gray-800">Bienvenue dans le Dashboard</h2>
         <p class="mt-4 text-gray-600">Ici, vous pouvez gérer vos tâches et projets en collaboration avec votre équipe.</p>
+
+        {# comment utiliser une pop up #}
+         {# {% include 'components/modal.html.twig' with {
+        'id': 'myModal',
+        'title': 'Créer une nouvelle tâche',
+        'close_label': 'Fermer'
+    } %} #}
     </div>
 
-    <!-- 1. Première section (Prend toute la largeur, moitié de la hauteur, bords arrondis) -->
+    <!-- 1. Première section  -->
     <div class="mt-6 bg-white shadow-md p-6 rounded-lg h-[50vh]">
         <h3 class="text-xl font-semibold text-gray-800">Vue d'ensemble des Projets</h3>
         <p class="mt-2 text-gray-600">Voici un aperçu des projets en cours et de leur état d'avancement.</p>
+        
     </div>
+
+    <!-- Comment inclure un bouton ?? -->
+    {# {% include 'components/button.html.twig' with { 'color': 'yellow', 'label': 'Ajouter une tâche' } %}  #}
+
 
     <!-- 2. Section inférieure (2 parties côte à côte) -->
     <div class="grid grid-cols-2 gap-6 mt-6">
@@ -205,6 +217,7 @@
                     <div class="bg-yellow-400 h-2.5 rounded-full" style="width: 75%;"></div> <!-- 75% d'avancement -->
                 </div>
                 <p class="mt-1 text-sm text-gray-500">75% complété</p>
+                
             </div>
         </div>
     </div>
