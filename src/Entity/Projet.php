@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProjetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,6 +27,27 @@ class Projet
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_fin = null;
+
+    /**
+     * @var Collection<int, Tache>
+     */
+    #[ORM\OneToMany(targetEntity: Tache::class, mappedBy: 'projet', orphanRemoval: true)]
+    private Collection $taches;
+
+    /**
+     * @var Collection<int, user>
+     */
+    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'projets')]
+    private Collection $users;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    public function __construct()
+    {
+        $this->taches = new ArrayCollection();
+        $this->users = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -75,6 +98,72 @@ class Projet
     public function setDateFin(?\DateTimeInterface $date_fin): static
     {
         $this->date_fin = $date_fin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Tache>
+     */
+    public function getTaches(): Collection
+    {
+        return $this->taches;
+    }
+
+    public function addTach(Tache $tach): static
+    {
+        if (!$this->taches->contains($tach)) {
+            $this->taches->add($tach);
+            $tach->setProjet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTach(Tache $tach): static
+    {
+        if ($this->taches->removeElement($tach)) {
+            // set the owning side to null (unless already changed)
+            if ($tach->getProjet() === $this) {
+                $tach->setProjet(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, user>
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(user $user): static
+    {
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(user $user): static
+    {
+        $this->users->removeElement($user);
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }

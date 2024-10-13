@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TacheRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -28,6 +30,31 @@ class Tache
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $status = null;
+
+    #[ORM\ManyToOne(inversedBy: 'taches')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?projet $projet = null;
+
+    /**
+     * @var Collection<int, Commentaire>
+     */
+    #[ORM\OneToMany(targetEntity: Commentaire::class, mappedBy: 'tache', orphanRemoval: true)]
+    private Collection $commentaires;
+
+    /**
+     * @var Collection<int, user>
+     */
+    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'taches')]
+    private Collection $user;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    public function __construct()
+    {
+        $this->commentaires = new ArrayCollection();
+        $this->user = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -90,6 +117,84 @@ class Tache
     public function setStatus(?string $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getProjet(): ?projet
+    {
+        return $this->projet;
+    }
+
+    public function setProjet(?projet $projet): static
+    {
+        $this->projet = $projet;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Commentaire>
+     */
+    public function getCommentaires(): Collection
+    {
+        return $this->commentaires;
+    }
+
+    public function addCommentaire(Commentaire $commentaire): static
+    {
+        if (!$this->commentaires->contains($commentaire)) {
+            $this->commentaires->add($commentaire);
+            $commentaire->setTache($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommentaire(Commentaire $commentaire): static
+    {
+        if ($this->commentaires->removeElement($commentaire)) {
+            // set the owning side to null (unless already changed)
+            if ($commentaire->getTache() === $this) {
+                $commentaire->setTache(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, user>
+     */
+    public function getUser(): Collection
+    {
+        return $this->user;
+    }
+
+    public function addUser(user $user): static
+    {
+        if (!$this->user->contains($user)) {
+            $this->user->add($user);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(user $user): static
+    {
+        $this->user->removeElement($user);
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
