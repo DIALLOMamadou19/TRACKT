@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Projet;
 use App\Entity\Tache;
 use App\Form\TaskFormType;
+use App\Repository\TacheRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,5 +98,21 @@ class TasksController extends AbstractController
         $entityManager->flush();
 
         return new JsonResponse(['message' => 'Task deleted successfully'], 200);
+    }
+
+    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['POST'])]
+    public function edit(Request $request, Tache $task, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent(), true);
+
+        $task->setNomTache($data['nom_tache']);
+        $task->setDescriptionTache($data['description_tache']);
+        $task->setDateDebut(new \DateTime($data['date_debut']));
+        $task->setDateEcheance(new \DateTime($data['date_echeance']));
+        $task->setStatus($data['status']);
+
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Task updated successfully']);
     }
 }
