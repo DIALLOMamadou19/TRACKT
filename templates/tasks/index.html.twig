@@ -48,8 +48,8 @@
 
     <!-- Modal -->
     <!-- Modal -->
-    <div id="newTaskModal" class="hidden fixed inset-0 bg-beige bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-6/12 shadow-lg rounded-2xl bg-beige border-black max-h-[90vh] flex flex-col">
+    <div id="newTaskModal" class="hidden fixed inset-0 bg-beige bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+        <div class="relative top-10 mx-auto p-5 border w-6/12 shadow-lg rounded-2xl bg-beige border-black max-h-[90vh] flex flex-col">
             <div class="overflow-y-auto flex-grow custom-scrollbar">
                 <div class="mt-4">
                     <h3 class="text-xl font-medium text-black text-center">Create a new Task</h3>
@@ -66,11 +66,11 @@
                         <div class="flex flex-row space-x-4">
                             <div class="mb-6 flex-1">
                                 {{ form_label(taskForm.date_debut, 'Start Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
-                                {{ form_widget(taskForm.date_debut, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-16'}}) }}
+                                {{ form_widget(taskForm.date_debut, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-20'}}) }}
                             </div>
                             <div class="mb-6 flex-1">
                                 {{ form_label(taskForm.date_echeance, 'End Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
-                                {{ form_widget(taskForm.date_echeance, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-16'}}) }}
+                                {{ form_widget(taskForm.date_echeance, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-20'}}) }}
                             </div>
                         </div>
                         <div class="mb-6">
@@ -135,8 +135,8 @@
         </div>
     </div>
 
-    <div id="editTaskModal" class="hidden fixed inset-0 bg-beige bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto p-5 border w-6/12 shadow-lg rounded-2xl bg-beige border-black max-h-[90vh] flex flex-col">
+    <div id="editTaskModal" class="hidden fixed inset-0 bg-beige bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
+        <div class="relative top-10 mx-auto p-5 border w-6/12 shadow-lg rounded-2xl bg-beige border-black max-h-[90vh] flex flex-col">
             <div class="overflow-y-auto flex-grow custom-scrollbar">
                 <div class="mt-4">
                     <h3 class="text-xl font-medium text-black text-center">Edit Task</h3>
@@ -154,11 +154,11 @@
                             <div class="flex flex-row space-x-4">
                                 <div class="mb-6 flex-1">
                                     <label for="editDateDebut" class="font-medium block text-left mb-2 ml-2">Start Date</label>
-                                    <input type="date" id="editDateDebut" name="date_debut" class="flex w-full h-14 rounded-full border shadow-sm border-black text-center">
+                                    <input type="date" id="editDateDebut" name="date_debut" class="flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-20">
                                 </div>
                                 <div class="mb-6 flex-1">
                                     <label for="editDateEcheance" class="font-medium block text-left mb-2 ml-2">End Date</label>
-                                    <input type="date" id="editDateEcheance" name="date_echeance" class="flex w-full h-14 rounded-full border shadow-sm border-black text-center">
+                                    <input type="date" id="editDateEcheance" name="date_echeance" class="flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-20">
                                 </div>
                             </div>
                             <div class="mb-6">
@@ -169,7 +169,24 @@
                                     <option value="Done">Done</option>
                                 </select>
                             </div>
-                            <!-- Ajoutez ici les champs pour la sélection des utilisateurs si nécessaire -->
+                            <div class="mb-6">
+                                <label for="editUserSearch" class="font-medium block text-left mb-2 ml-2">Assign Users</label>
+                                <div class="relative">
+                                    <input type="text" id="editUserSearch" class="w-full h-10 px-3 mb-2 text-base placeholder-gray-600 border rounded-lg focus:shadow-outline" placeholder="Search users...">
+                                    <button type="button" id="clearEditUserSearch" class="absolute text-sm right-2 top-5 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
+                                        Clear
+                                    </button>
+                                </div>
+                                <div id="editUserList" class="border border-gray-300 rounded-lg p-3 max-h-60 overflow-y-auto">
+                                    {% for user in users %}
+                                        <div class="flex items-center mb-2 edit-user-item">
+                                            <input type="checkbox" id="edit_user_{{ user.id }}" name="users[]" value="{{ user.id }}" class="mr-2">
+                                            <label for="edit_user_{{ user.id }}" class="text-sm">{{ user.username }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <p id="editSelectedCount" class="mt-2 text-sm text-gray-600">0 users selected</p>
+                            </div>
                         </div>
                         <div class="mt-4 text-center">
                             <button type="submit" class="bg-primary border border-black text-black font-medium py-2.5 px-5 rounded-full">
@@ -216,6 +233,66 @@
             const openEditModalBtn = document.getElementById('openEditModal');
             const editTaskForm = document.getElementById('editTaskForm');
 
+            const userSearch = document.getElementById('userSearch');
+            const userList = document.getElementById('userList');
+            const userItems = userList.querySelectorAll('.user-item');
+            const selectedCount = document.getElementById('selectedCount');
+            const checkboxes = userList.querySelectorAll('input[type="checkbox"]');
+
+            const editUserSearch = document.getElementById('editUserSearch');
+            const editUserList = document.getElementById('editUserList');
+            const editUserItems = editUserList.querySelectorAll('.edit-user-item');
+            const editSelectedCount = document.getElementById('editSelectedCount');
+            const editCheckboxes = editUserList.querySelectorAll('input[type="checkbox"]');
+            const clearEditUserSearch = document.getElementById('clearEditUserSearch');
+
+            function updateUserVisibility(searchInput, items) {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                items.forEach(item => {
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    const userName = item.textContent.toLowerCase();
+
+                    if (checkbox.checked || (searchTerm.length > 0 && userName.includes(searchTerm))) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            }
+
+            function updateSelectedCount(checkboxes, countElement) {
+                const count = Array.from(checkboxes).filter(cb => cb.checked).length;
+                countElement.textContent = `${count} users selected`;
+            }
+
+            userSearch.addEventListener('input', () => updateUserVisibility(userSearch, userItems));
+            editUserSearch.addEventListener('input', () => updateUserVisibility(editUserSearch, editUserItems));
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateSelectedCount(checkboxes, selectedCount);
+                    updateUserVisibility(userSearch, userItems);
+                });
+            });
+
+            editCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    updateSelectedCount(editCheckboxes, editSelectedCount);
+                    updateUserVisibility(editUserSearch, editUserItems);
+                });
+            });
+
+            clearEditUserSearch.addEventListener('click', function() {
+                editUserSearch.value = '';
+                updateUserVisibility(editUserSearch, editUserItems);
+            });
+
+            updateSelectedCount(checkboxes, selectedCount);
+            updateSelectedCount(editCheckboxes, editSelectedCount);
+            updateUserVisibility(userSearch, userItems);
+            updateUserVisibility(editUserSearch, editUserItems);
+
             openEditModalBtn.onclick = function() {
                 taskDetailsModal.style.display = "none";
                 editTaskModal.style.display = "block";
@@ -231,6 +308,13 @@
                     document.getElementById('editDateDebut').value = formatDateForInput(taskCard.getAttribute('data-task-date_debut'));
                     document.getElementById('editDateEcheance').value = formatDateForInput(taskCard.getAttribute('data-task-date_echeance'));
                     document.getElementById('editStatus').value = taskCard.getAttribute('data-task-status');
+
+                    const assignedUsers = JSON.parse(taskCard.getAttribute('data-task-users'));
+                    editUserList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.checked = assignedUsers.some(user => user.id == checkbox.value);
+                    });
+                    updateSelectedCount(editCheckboxes, editSelectedCount);
+                    updateUserVisibility(editUserSearch, editUserItems);
                 }
             }
 
@@ -244,6 +328,8 @@
                 const formData = new FormData(editTaskForm);
                 const data = Object.fromEntries(formData.entries());
 
+                data.users = Array.from(editTaskForm.querySelectorAll('input[name="users[]"]:checked')).map(cb => cb.value);
+
                 axios.post(`/tasks/${currentTaskId}/edit`, data, {
                     headers: {
                         'Content-Type': 'application/json',
@@ -252,11 +338,10 @@
                     .then(function (response) {
                         console.log('Task updated successfully');
                         editTaskModal.style.display = "none";
-                        location.reload(); // Refresh the page to show updated task
+                        location.reload();
                     })
                     .catch(function (error) {
                         console.error('Error updating task:', error);
-                        // Ajouter ici un message d'erreur pour l'utilisateur
                     });
             }
 
@@ -301,7 +386,7 @@
                         document.getElementById('taskStatus').textContent = status;
 
                         const usersContainer = document.getElementById('taskUsers');
-                        usersContainer.innerHTML = ''; // Clear previous users
+                        usersContainer.innerHTML = '';
                         users.forEach(user => {
                             const userElement = document.createElement('div');
                             userElement.className = 'flex flex-row w-max rounded-full border border-black bg-white pl-2 pr-4 py-1.5';
@@ -319,7 +404,7 @@
 
             document.querySelectorAll('.delete-task-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
-                    e.stopPropagation(); // Prevent task details modal from opening
+                    e.stopPropagation();
                     currentTaskId = this.closest('.task-card').getAttribute('data-task-id');
                     deleteConfirmModal.style.display = "block";
                 });
@@ -331,7 +416,7 @@
                         .then(function (response) {
                             console.log('Task deleted successfully');
                             deleteConfirmModal.style.display = "none";
-                            location.reload(); // Refresh the page to show updated task list
+                            location.reload();
                         })
                         .catch(function (error) {
                             console.error('Error deleting task:', error);
@@ -360,6 +445,42 @@
             const userItems = userList.querySelectorAll('.user-item');
             const selectedCount = document.getElementById('selectedCount');
             const checkboxes = userList.querySelectorAll('input[type="checkbox"]');
+            const editUserSearch = document.getElementById('editUserSearch');
+            const editUserList = document.getElementById('editUserList');
+            const editUserItems = editUserList.querySelectorAll('.edit-user-item');
+            const editSelectedCount = document.getElementById('editSelectedCount');
+            const editCheckboxes = editUserList.querySelectorAll('input[type="checkbox"]');
+
+            editUserItems.forEach(item => {
+                item.style.display = 'none';
+            });
+
+            editUserSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+
+                if (searchTerm.length > 0) {
+                    editUserItems.forEach(item => {
+                        const userName = item.textContent.toLowerCase();
+                        item.style.display = userName.includes(searchTerm) ? 'block' : 'none';
+                    });
+                } else {
+                    // Hide all items when search bar is empty
+                    editUserItems.forEach(item => {
+                        item.style.display = 'none';
+                    });
+                }
+            });
+
+            function updateEditSelectedCount() {
+                const count = Array.from(editCheckboxes).filter(cb => cb.checked).length;
+                editSelectedCount.textContent = `${count} users selected`;
+            }
+
+            editCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateEditSelectedCount);
+            });
+
+            updateEditSelectedCount(); // Initial count
 
             // Hide all user items initially
             userItems.forEach(item => {

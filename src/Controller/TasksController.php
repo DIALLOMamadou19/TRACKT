@@ -101,7 +101,7 @@ class TasksController extends AbstractController
     }
 
     #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['POST'])]
-    public function edit(Request $request, Tache $task, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Tache $task, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -110,6 +110,22 @@ class TasksController extends AbstractController
         $task->setDateDebut(new \DateTime($data['date_debut']));
         $task->setDateEcheance(new \DateTime($data['date_echeance']));
         $task->setStatus($data['status']);
+
+        // Gérer les utilisateurs assignés
+        if (isset($data['users'])) {
+            // Supprimer tous les utilisateurs actuellement assignés
+            foreach ($task->getUser() as $user) {
+                $task->removeUser($user);
+            }
+
+            // Ajouter les nouveaux utilisateurs assignés
+            foreach ($data['users'] as $userId) {
+                $user = $userRepository->find($userId);
+                if ($user) {
+                    $task->addUser($user);
+                }
+            }
+        }
 
         $entityManager->flush();
 
