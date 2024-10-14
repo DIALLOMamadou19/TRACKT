@@ -1,7 +1,14 @@
-body {
-    background-color: lightgray;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.scrollable-column {
+    scrollbar-width: none; /* Pour Firefox */
+    -ms-overflow-style: none; /* Pour Internet Explorer et Edge */
+}
+.scrollable-column::-webkit-scrollbar {
+    display: none; /* Pour Chrome, Safari et Opera */
+}
+
+body {
+}
