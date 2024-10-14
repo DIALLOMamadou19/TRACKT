@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Projet;
 use App\Entity\Tache;
 use App\Form\TaskFormType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class TasksController extends AbstractController
 {
     #[Route('/tasks', name: 'app_tasks')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EntityManagerInterface $entityManager, UserRepository $userRepository): Response
     {
         $tasks = $entityManager->getRepository(Tache::class)->findAll();
 
@@ -26,12 +27,20 @@ class TasksController extends AbstractController
         ];
 
         foreach ($tasks as $task) {
-            $status = $task->getStatus();
-            if (array_key_exists($status, $groupedTasks)) {
-                $groupedTasks[$status][] = $task;
-            } else {
-                $groupedTasks['To do'][] = $task;
-            }
+            $groupedTasks[$task->getStatus()][] = [
+                'id' => $task->getId(),
+                'nomTache' => $task->getNomTache(),
+                'descriptionTache' => $task->getDescriptionTache(),
+                'DateDebut' => $task->getDateDebut(),
+                'DateEcheance' => $task->getDateEcheance(),
+                'status' => $task->getStatus(),
+                'users' => $task->getUser()->map(function($user) {
+                    return [
+                        'id' => $user->getId(),
+                        'username' => $user->getUsername()
+                    ];
+                })->toArray()
+            ];
         }
 
         $form = $this->createForm(TaskFormType::class, new Tache());
@@ -39,6 +48,7 @@ class TasksController extends AbstractController
         return $this->render('tasks/index.html.twig', [
             'groupedTasks' => $groupedTasks,
             'taskForm' => $form->createView(),
+            'users' => $userRepository->findAll(),
         ]);
     }
 
