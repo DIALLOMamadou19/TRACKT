@@ -17,8 +17,8 @@
                                              data-task-id="{{ task.id }}"
                                              data-task-title="{{ task.nomTache }}"
                                              data-task-description="{{ task.descriptionTache }}"
-                                             data-task-date_debut="{{ task.DateDebut|date('Y-m-d') }}"
-                                             data-task-date_echeance="{{ task.DateEcheance|date('Y-m-d') }}"
+                                             data-task-date_debut="{{ task.DateDebut|date('d/m/Y') }}"
+                                             data-task-date_echeance="{{ task.DateEcheance|date('d/m/Y') }}"
                                              data-task-status="{{ task.status }}">
                                             <h3 class="font-semibold text-sm mb-2">{{ task.nomTache }}</h3>
                                             <p class="text-sm text-gray-600">{{ task.descriptionTache }}</p>
@@ -78,15 +78,46 @@
     </div>
 
     <div id="taskDetailsModal" class="hidden fixed inset-0 bg-beige bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto py-5 px-16 border w-6/12 shadow-lg rounded-2xl bg-beige border-black">
+        <div class="relative top-20 mx-auto py-5 px-16 border w-5/12 shadow-lg rounded-2xl bg-beige border-black">
             <div class="mt-4">
-                <h1 id="taskTitle" class="text-2xl font-bold mb-4 text-center"></h1>
-                <p id="taskDescription" class="text-lg text-gray-700"></p>
-                <p id="taskDateDebut" class="text-lg text-gray-700"></p>
-                <p id="taskDateEcheance" class="text-lg text-gray-700"></p>
-                <p id="taskStatus" class="text-lg text-gray-700"></p>
+                <h1 id="taskTitle" class="text-2xl font-semibold mb-3 opacity-60"></h1>
+                <div class="flex flex-row gap-16">
+                    <div class="flex flex-row gap-1 mb-8">
+                        <p class="text-gray-700 text-sm">Start Date : </p>
+                        <p id="taskDateDebut" class="text-gray-700 text-sm"></p>
+                    </div>
+                    <div class="flex flex-row gap-1">
+                        <p class="text-gray-700 text-sm">End Date : </p>
+                        <p id="taskDateEcheance" class="text-gray-700 text-sm"></p>
+                    </div>
+                    <div class="flex flex-row gap-1 mb-8">
+                        <p class="text-gray-700 text-sm">Status : </p>
+                        <p id="taskStatus" class="text-sm text-gray-700"></p>
+                    </div>
+                </div>
+                <div class="flex flex-col">
+                    <h3 class="text-lg text-gray-600 font-medium mb-2">Description</h3>
+                    <p id="taskDescription" class="text-md text-gray-700"></p>
+                </div>
+                <div class="flex flex-col mt-8">
+                    <h3 class="text-lg text-gray-600 font-medium mb-4">Assigned user(s)</h3>
+                    <div class="flex flex-row gap-6">
+                        <div class="flex flex-row w-max rounded-full border border-black bg-white pl-2 pr-4 py-1.5">
+                            <div class="rounded-full h-5 w-5 border border-black bg-yellow-300"></div>
+                            <p class="mx-2 text-sm">User 1</p>
+                        </div>
+                        <div class="flex flex-row w-max rounded-full border border-black bg-white pl-2 pr-4 py-1.5">
+                            <div class="rounded-full h-5 w-5 border border-black bg-yellow-300"></div>
+                            <p class="mx-2 text-sm">User 2</p>
+                        </div>
+                        <div class="flex flex-row w-max rounded-full border border-black bg-white pl-2 pr-4 py-1.5">
+                            <div class="rounded-full h-5 w-5 border border-black bg-yellow-300"></div>
+                            <p class="mx-2 text-sm">User 3</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mt-6 text-center">
+            <div class="mt-12 text-right mb-4">
                 <button id="closeTaskDetailsBtn" class="bg-primary border border-black text-black font-medium py-2.5 px-5 rounded-full">
                     Close
                 </button>
