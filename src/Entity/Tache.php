@@ -23,17 +23,11 @@ class Tache
     private ?string $description_tache = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date_creation = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_echeance = null;
-
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'taches')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?projet $projet = null;
+    private ?Projet $projet = null;
 
     /**
      * @var Collection<int, Commentaire>
@@ -44,11 +38,19 @@ class Tache
     /**
      * @var Collection<int, user>
      */
-    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'taches')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'taches')]
     private Collection $user;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $status = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_debut = null;
+
+
 
     public function __construct()
     {
@@ -85,18 +87,6 @@ class Tache
         return $this;
     }
 
-    public function getDateCreation(): ?\DateTimeInterface
-    {
-        return $this->date_creation;
-    }
-
-    public function setDateCreation(?\DateTimeInterface $date_creation): static
-    {
-        $this->date_creation = $date_creation;
-
-        return $this;
-    }
-
     public function getDateEcheance(): ?\DateTimeInterface
     {
         return $this->date_echeance;
@@ -109,24 +99,12 @@ class Tache
         return $this;
     }
 
-    public function getStatus(): ?string
-    {
-        return $this->status;
-    }
-
-    public function setStatus(?string $status): static
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    public function getProjet(): ?projet
+    public function getProjet(): ?Projet
     {
         return $this->projet;
     }
 
-    public function setProjet(?projet $projet): static
+    public function setProjet(?Projet $projet): static
     {
         $this->projet = $projet;
 
@@ -164,14 +142,14 @@ class Tache
     }
 
     /**
-     * @return Collection<int, user>
+     * @return Collection<int, User>
      */
     public function getUser(): Collection
     {
         return $this->user;
     }
 
-    public function addUser(user $user): static
+    public function addUser(User $user): static
     {
         if (!$this->user->contains($user)) {
             $this->user->add($user);
@@ -180,7 +158,7 @@ class Tache
         return $this;
     }
 
-    public function removeUser(user $user): static
+    public function removeUser(User $user): static
     {
         $this->user->removeElement($user);
 
@@ -195,6 +173,30 @@ class Tache
     public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDateDebut(): ?\DateTimeInterface
+    {
+        return $this->date_debut;
+    }
+
+    public function setDateDebut(?\DateTimeInterface $date_debut): static
+    {
+        $this->date_debut = $date_debut;
 
         return $this;
     }
