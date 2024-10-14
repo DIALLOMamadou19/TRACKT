@@ -47,38 +47,54 @@
     </button>
 
     <!-- Modal -->
+    <!-- Modal -->
     <div id="newTaskModal" class="hidden fixed inset-0 bg-beige bg-opacity-50 overflow-y-auto h-full w-full">
-        <div class="relative top-20 mx-auto py-5 px-16 border w-6/12 shadow-lg rounded-2xl bg-beige border-black">
-            <div class="mt-4">
-                <h3 class="text-xl font-medium text-black text-center">Create a new Task</h3>
-                {{ form_start(taskForm, {'attr': {'id': 'taskForm'}}) }}
-                <div class="mt-3 px-7 py-3">
-                    <div class="mb-6">
-                        {{ form_label(taskForm.nom_tache, 'Name', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
-                        {{ form_widget(taskForm.nom_tache, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black pl-4'}}) }}
-                    </div>
-                    <div class="mb-6">
-                        {{ form_label(taskForm.description_tache, 'Description', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
-                        {{ form_widget(taskForm.description_tache, {'attr': {'class': 'flex h-32 w-full rounded-2xl border shadow-sm border-black p-2 pl-4'}}) }}
-                    </div>
-                    <div class="flex flex-row space-x-4">
-                        <div class="mb-6 flex-1">
-                            {{ form_label(taskForm.date_debut, 'Start Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
-                            {{ form_widget(taskForm.date_debut, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-16'}}) }}
+        <div class="relative top-20 mx-auto p-5 border w-6/12 shadow-lg rounded-2xl bg-beige border-black max-h-[90vh] flex flex-col">
+            <div class="overflow-y-auto flex-grow custom-scrollbar">
+                <div class="mt-4">
+                    <h3 class="text-xl font-medium text-black text-center">Create a new Task</h3>
+                    {{ form_start(taskForm, {'attr': {'id': 'taskForm'}}) }}
+                    <div class="mt-3 px-7 py-3">
+                        <div class="mb-6">
+                            {{ form_label(taskForm.nom_tache, 'Name', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+                            {{ form_widget(taskForm.nom_tache, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black pl-4'}}) }}
                         </div>
-                        <div class="mb-6 flex-1">
-                            {{ form_label(taskForm.date_echeance, 'End Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
-                            {{ form_widget(taskForm.date_echeance, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-16'}}) }}
+                        <div class="mb-6">
+                            {{ form_label(taskForm.description_tache, 'Description', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+                            {{ form_widget(taskForm.description_tache, {'attr': {'class': 'flex h-32 w-full rounded-2xl border shadow-sm border-black p-2 pl-4'}}) }}
+                        </div>
+                        <div class="flex flex-row space-x-4">
+                            <div class="mb-6 flex-1">
+                                {{ form_label(taskForm.date_debut, 'Start Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+                                {{ form_widget(taskForm.date_debut, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-16'}}) }}
+                            </div>
+                            <div class="mb-6 flex-1">
+                                {{ form_label(taskForm.date_echeance, 'End Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+                                {{ form_widget(taskForm.date_echeance, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-16'}}) }}
+                            </div>
+                        </div>
+                        <div class="mb-6">
+                            {{ form_label(taskForm.user, 'Assign Users', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+                            <input type="text" id="userSearch" class="w-full h-10 px-3 mb-2 text-base placeholder-gray-600 border rounded-lg focus:shadow-outline" placeholder="Search users...">
+                            <div id="userList" class="border border-gray-300 rounded-lg p-3 max-h-60 overflow-y-auto">
+                                {% for user in taskForm.user %}
+                                    <div class="flex items-center mb-2 user-item">
+                                        {{ form_widget(user, {'attr': {'class': 'mr-2'}}) }}
+                                        {{ form_label(user, null, {'label_attr': {'class': 'text-sm'}}) }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <p id="selectedCount" class="mt-2 text-sm text-gray-600">0 users selected</p>
                         </div>
                     </div>
                 </div>
-                <div class="items-center px-4 pt-2 pb-3 text-center">
-                    <button type="submit" id="submitTaskBtn" class="bg-primary border border-black text-black font-medium py-2.5 px-5 rounded-full">
-                        Create Task
-                    </button>
-                </div>
-                {{ form_end(taskForm) }}
             </div>
+            <div class="mt-4 text-center">
+                <button type="submit" id="submitTaskBtn" class="bg-primary border border-black text-black font-medium py-2.5 px-5 rounded-full">
+                    Create Task
+                </button>
+            </div>
+            {{ form_end(taskForm) }}
         </div>
     </div>
 
@@ -243,6 +259,45 @@
                         console.error('Error:', error);
                     });
             }
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+            const userSearch = document.getElementById('userSearch');
+            const userList = document.getElementById('userList');
+            const userItems = userList.querySelectorAll('.user-item');
+            const selectedCount = document.getElementById('selectedCount');
+            const checkboxes = userList.querySelectorAll('input[type="checkbox"]');
+
+            // Hide all user items initially
+            userItems.forEach(item => {
+                item.style.display = 'none';
+            });
+
+            userSearch.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+
+                if (searchTerm.length > 0) {
+                    userItems.forEach(item => {
+                        const userName = item.textContent.toLowerCase();
+                        item.style.display = userName.includes(searchTerm) ? 'block' : 'none';
+                    });
+                } else {
+                    // Hide all items when search bar is empty
+                    userItems.forEach(item => {
+                        item.style.display = 'none';
+                    });
+                }
+            });
+
+            function updateSelectedCount() {
+                const count = Array.from(checkboxes).filter(cb => cb.checked).length;
+                selectedCount.textContent = `${count} users selected`;
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateSelectedCount);
+            });
+
+            updateSelectedCount(); // Initial count
         });
     </script>
 {% endblock %}

@@ -63,12 +63,11 @@ class TasksController extends AbstractController
             $task->setStatus('To do');
             $task->setCreatedAt(new \DateTime());
 
-            // Get the current user
-            $user = $this->getUser();
-            if (!$user) {
-                return new JsonResponse(['error' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
+            // Add only the assigned users from the form
+            $assignedUsers = $form->get('user')->getData();
+            foreach ($assignedUsers as $user) {
+                $task->addUser($user);
             }
-            $task->addUser($user);
 
             // Set the projet with ID 1
             $projet = $entityManager->getRepository(Projet::class)->find(1);
