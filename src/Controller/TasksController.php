@@ -14,11 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class TasksController extends AbstractController
 {
+   
     #[Route('/tasks', name: 'app_tasks')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         $tasks = $entityManager->getRepository(Tache::class)->findAll();
-
+        $projets = $entityManager->getRepository(Projet::class)->findAll();
         $groupedTasks = [
             'To do' => [],
             'In progress' => [],
@@ -35,10 +36,12 @@ class TasksController extends AbstractController
         }
 
         $form = $this->createForm(TaskFormType::class, new Tache());
+       
 
         return $this->render('tasks/index.html.twig', [
             'groupedTasks' => $groupedTasks,
             'taskForm' => $form->createView(),
+            'projets' => $projets,
         ]);
     }
 

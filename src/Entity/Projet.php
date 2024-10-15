@@ -17,7 +17,7 @@ class Projet
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nom_projet = null;
+    private ?string $nomProjet = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -35,9 +35,9 @@ class Projet
     private Collection $taches;
 
     /**
-     * @var Collection<int, user>
+     * @var Collection<int, User>
      */
-    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'projets')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projets')]
     private Collection $users;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -56,12 +56,12 @@ class Projet
 
     public function getNomProjet(): ?string
     {
-        return $this->nom_projet;
+        return $this->nomProjet;
     }
 
-    public function setNomProjet(string $nom_projet): static
+    public function setNomProjet(string $nomProjet): static
     {
-        $this->nom_projet = $nom_projet;
+        $this->nomProjet = $nomProjet;
 
         return $this;
     }
@@ -133,25 +133,25 @@ class Projet
     }
 
     /**
-     * @return Collection<int, user>
+     * @return Collection<int, User>
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    public function addUser(user $user): static
+    public function addUser(User $User): static
     {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
+        if (!$this->users->contains($User)) {
+            $this->users->add($User);
         }
 
         return $this;
     }
 
-    public function removeUser(user $user): static
+    public function removeUser(User $User): static
     {
-        $this->users->removeElement($user);
+        $this->users->removeElement($User);
 
         return $this;
     }
