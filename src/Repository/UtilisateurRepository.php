@@ -17,20 +17,6 @@ class UtilisateurRepository extends ServiceEntityRepository
     }
 
 
-     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
-    {
-        if (!$user instanceof Utilisateur) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', \get_class($user)));
-        }
-
-        $user->setPassword($newEncodedPassword);
-        $this->_em->persist($user);
-        $this->_em->flush();
-    }
-
     //    /**
     //     * @return Utilisateur[] Returns an array of Utilisateur objects
     //     */
