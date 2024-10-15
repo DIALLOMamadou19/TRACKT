@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Userinfo{% endblock %}
+
+{% block body %}
+    <h1>Userinfo</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ userinfo.id }}</td>
+            </tr>
+            <tr>
+                <th>Categoryid</th>
+                <td>{{ userinfo.categoryid }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ userinfo.title }}</td>
+            </tr>
+            <tr>
+                <th>Link</th>
+                <td>{{ userinfo.link }}</td>
+            </tr>
+            <tr>
+                <th>Userid</th>
+                <td>{{ userinfo.userid }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('userinfo_index') }}">back to list</a>
+
+    <a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a>
+
+    {{ include('userinfo/_delete_form.html.twig') }}
+{% endblock %}

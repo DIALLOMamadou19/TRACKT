@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Userinfo index{% endblock %}
+
+{% block body %}
+    <h1>Userinfo index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Categoryid</th>
+                <th>Title</th>
+                <th>Link</th>
+                <th>Userid</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for userinfo in userinfos %}
+            <tr>
+                <td>{{ userinfo.id }}</td>
+                <td>{{ userinfo.categoryid }}</td>
+                <td>{{ userinfo.title }}</td>
+                <td>{{ userinfo.link }}</td>
+                <td>{{ userinfo.userid }}</td>
+                <td>
+                    <a href="{{ path('userinfo_show', {'id': userinfo.id}) }}">show</a>
+                    <a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('userinfo_new') }}">Create new</a>
+{% endblock %}

@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\UtilisateurRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 class Utilisateur
@@ -14,11 +16,21 @@ class Utilisateur
     #[ORM\Column]
     private ?int $id = null;
 
+    private $roles = [];
+
     #[ORM\Column(length: 100)]
     private ?string $nom_user = null;
 
     #[ORM\Column(length: 100)]
     private ?string $email = null;
+
+    
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
+
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_inscription = null;
@@ -40,6 +52,25 @@ class Utilisateur
         return $this;
     }
 
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+
     public function getEmail(): ?string
     {
         return $this->email;
@@ -51,6 +82,20 @@ class Utilisateur
 
         return $this;
     }
+
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+
 
     public function getDateInscription(): ?\DateTimeInterface
     {

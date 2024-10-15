@@ -1,0 +1,555 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User Panel{% endblock %}
+
+{% block body %}
+    <section class="profile-account-setting">
+        <div class="container">
+            <div class="account-tabs-setting">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="acc-leftbar">
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-acc-tab" data-toggle="tab" href="#nav-acc" role="tab" aria-controls="nav-acc" aria-selected="true"><i class="la la-cogs"></i>Account Setting</a>
+                                <a class="nav-item nav-link" id="nav-status-tab" data-toggle="tab" href="#nav-status" role="tab" aria-controls="nav-status" aria-selected="false"><i class="fa fa-group"></i>Publishment Setting</a>
+                                <a class="nav-item nav-link" id="nav-notification-tab" data-toggle="tab" href="#nav-notification" role="tab" aria-controls="nav-notification" aria-selected="false"><i class="fa fa-flash"></i>Profile Picture</a>
+                                <a class="nav-item nav-link" id="nav-requests-tab" data-toggle="tab" href="#nav-requests" role="tab" aria-controls="nav-requests" aria-selected="false"><i class="fa fa-address-book"></i>Stats</a>
+                                <a class="nav-item nav-link" href="/logout"><i class="fa fa-level-down"></i>Logout</a>
+                            </div>
+                        </div><!--acc-leftbar end-->
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="tab-content" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-acc" role="tabpanel" aria-labelledby="nav-acc-tab">
+                                <button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">Kişisel Bilgiler</button>
+                                <button class="tablink" onclick="openPage('News', this, 'green')" >Genel Bilgiler</button>
+                                <button class="tablink" onclick="openPage('Contact', this, 'blue')">Akademik Bilgiler</button>
+                                <div class="acc-setting">
+                                    <form action="{{ path('userpanel_update', {'id': id}) }}" method="post">
+                                        <div id="Home" class="tabcontent">
+
+                                            <div class="cp-field">
+                                                <h5>Email</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="email" placeholder="Email" value="{{ user.email }}" disabled>
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Email 2</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="email2" placeholder="Email2" value="{{ user.email2 }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Name</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="name" placeholder="Name" value="{{ user.name }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Location</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="location" placeholder="Location" value="{{ user.location }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>School</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="school" placeholder="School" value="{{ user.school }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Room No</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="roomno" placeholder="Room No" value="{{ user.roomno }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Department</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="department" placeholder="Department" value="{{ user.department }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Website</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="website" placeholder="Website" value="{{ user.website }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Phone</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="phone" placeholder="Phone" value="{{ user.phone }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Fax</h5>
+                                                <div class="cpp-fiel">
+                                                    <input type="text" name="fax" placeholder="Fax" value="{{ user.fax }}">
+                                                    <i class="fa fa-envelope"></i>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div id="News" class="tabcontent">
+                                            <div class="cp-field">
+                                                <h5>Info</h5>
+                                                <textarea name="info">{{ user.info }}</textarea>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Skills</h5>
+                                                <textarea name="skills">{{ user.skills }}</textarea>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Workarea</h5>
+                                                <textarea name="workarea">{{ user.workarea }}</textarea>
+                                            </div>
+                                            <div class="cp-field">
+                                                <h5>Title and Tasks</h5>
+                                                <textarea name="titleandtasks">{{ user.titleandtasks }}</textarea>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div id="Contact" class="tabcontent">
+                                            <div class="notbar">
+                                                <div class="notbar">
+                                                    <h3 style="color: black; font-size: 20px;">Eğitim Bilgileri</h3>
+                                                </div>
+                                                <div class="cp-field">
+                                                    <h5>Lisans</h5>
+                                                    <div class="cpp-fiel">
+                                                        <input type="text" name="edulis" placeholder="Lisans Öğretimi" value="{{ user.edulis }}">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="cp-field">
+                                                    <h5>Yüksek Lisans</h5>
+                                                    <div class="cpp-fiel">
+                                                        <input type="text" name="edumaster" placeholder="Yüksek Lisans Öğretimi" value="{{ user.edumaster }}">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="cp-field">
+                                                    <h5>Doktora</h5>
+                                                    <div class="cpp-fiel">
+                                                        <input type="text" name="edudoc" placeholder="Doktora Öğretimi" value="{{ user.edudoc }}">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="notbar">
+                                                <div class="notbar">
+                                                    <h3 style="color: black; font-size: 20px;">Tez Bilgileri</h3>
+                                                </div>
+                                                <div class="cp-field">
+                                                    <h5>Yüksek Lisans</h5>
+                                                    <div class="cpp-fiel">
+                                                        <input type="text" name="thesismaster" placeholder="Yüksek Lisans Tezi" value="{{ user.thesismaster }}">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="cp-field">
+                                                    <h5>Doktora</h5>
+                                                    <div class="cpp-fiel">
+                                                        <input type="text" name="thesisdoc" placeholder="Doktora Tezi" value="{{ user.thesisdoc }}">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="save-stngs pd3">
+                                            <ul>
+                                                <li><button type="submit">Save Setting</button></li>
+                                            </ul>
+                                        </div><!--save-stngs end-->
+                                    </form>
+                                </div>
+
+
+                                <script>
+                                    function openPage(pageName,elmnt,color) {
+                                        var i, tabcontent, tablinks;
+                                        tabcontent = document.getElementsByClassName("tabcontent");
+                                        for (i = 0; i < tabcontent.length; i++) {
+                                            tabcontent[i].style.display = "none";
+                                        }
+                                        tablinks = document.getElementsByClassName("tablink");
+                                        for (i = 0; i < tablinks.length; i++) {
+                                            tablinks[i].style.backgroundColor = "";
+                                        }
+                                        document.getElementById(pageName).style.display = "block";
+                                        elmnt.style.backgroundColor = color;
+                                    }
+
+                                    // Get the element with id="defaultOpen" and click on it
+                                    document.getElementById("defaultOpen").click();
+                                </script>
+
+
+
+                            </div><!--acc-setting end-->
+
+                            <div class="tab-pane fade" id="nav-status" role="tabpanel" aria-labelledby="nav-status-tab">
+                                <div class="acc-setting">
+                                    <h3>Publishment Setting</h3>
+                                    <div class="col-lg-12">
+                                        <div class="profile-bx-details">
+                                            <div class="row">
+                                                <div class="pro-work-status">
+                                                    <h4>Add New Information</h4>
+                                                </div><!--pro-work-status end-->
+                                                <div class="post-project-fields" style="padding-top: 0px">
+                                                    <form action="{{ path('userinfo_new')}}" method="post">
+                                                        <input type="hidden" name="userinfo[userid]" value="{{ app.user.id }}">
+                                                        <div class="inp-field">
+                                                            <select name="userinfo[categoryid]">
+                                                                <option value="0">SCI, SCIE, SSCI Kapsamındaki Uluslararası Hakemli Dergilerde Yayınlanmış Makaleler</option>
+                                                                <option value="1">Diğer Uluslararası Hakemli Dergilerde Yayınlanmış Makaleler</option>
+                                                                <option value="2">Ulusal Hakemli Dergilerde Yayınlanmış Makaleler</option>
+                                                                <option value="3">Uluslararası Bilimsel Toplantılarda Sunulmuş Bildiriler</option>
+                                                                <option value="4">Ulusal Bilimsel Toplantılarda Sunulmuş Bildiriler</option>
+                                                                <option value="5">Yayın Kurulunda Yer Alınan Dergi ve Konferanslar</option>
+                                                                <option value="6">Hakemlik Yapılan Dergi ve Konferanslar</option>
+                                                                <option value="7">Ödül ve Destekler</option>
+                                                                <option value="8">Verilen Dersler</option>
+                                                                <option value="9">Tez Danışmanlıkları</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="cpp-fiel">
+                                                            <input type="text" name="userinfo[title]" placeholder="Başlık">
+                                                        </div>
+                                                        <div class="cpp-fiel">
+                                                            <input type="text" name="userinfo[link]" placeholder="Link">
+                                                        </div>
+                                                        <ul>
+                                                            <li><button type="submit">Ekle</button></li>
+                                                        </ul>
+                                                    </form>
+                                                </div>
+                                                <table class="table">
+                                                    <div class="pro-work-status">
+                                                        <h4>Yayınlar</h4>
+                                                    </div><!--pro-work-status end-->
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">SCI, SCIE, SSCI Kapsamındaki Uluslararası Hakemli Dergilerde Yayınlanmış Makaleler</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==0 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody>
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Diğer Uluslararası Hakemli Dergilerde Yayınlanmış Makaleler</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==1 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody>
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Ulusal Hakemli Dergilerde Yayınlanmış Makaleler</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==2 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody>
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Uluslararası Bilimsel Toplantılarda Sunulmuş Bildiriler</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==3 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody>
+                                                    <thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Ulusal Bilimsel Toplantılarda Sunulmuş Bildiriler</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==4 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody><thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Yayın Kurulunda Yer Alınan Dergi ve Konferanslar</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==5 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody><thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Hakemlik Yapılan Dergi ve Konferanslar</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==6 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody><thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Ödül ve Destekler</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==7 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody><thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Verilen Dersler</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==8 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody><thead>
+                                                    <tr>
+                                                        <th style="font-size: 15px; font-weight: bold">Tez Danışmanlıkları</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for userinfo in userinfos %}
+                                                        {% if (userinfo.categoryid)==9 %}
+                                                            <tr>
+                                                                <td><a href="{{ userinfo.link }}" style="color: black;">{{ userinfo.title }}</a></td>
+                                                                <td><a href="{{ path('userinfo_edit', {'id': userinfo.id}) }}">edit</a></td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div><!--profile-bx-details end-->
+                                        <div class="pro-work-status">
+                                            <!-- <h4>Work Status  -  Last Months Working Status</h4> -->
+                                        </div><!--pro-work-status end-->
+                                    </div><!--acc-setting end-->
+                                </div>
+                            </div>
+                        <div class="tab-pane fade" id="nav-password" role="tabpanel" aria-labelledby="nav-password-tab">
+                            <div class="acc-setting">
+                                <h3>Account Setting</h3>
+                                <form>
+                                    <div class="cp-field">
+                                        <h5>Old Password</h5>
+                                        <div class="cpp-fiel">
+                                            <input type="text" name="old-password" placeholder="Old Password">
+                                            <i class="fa fa-lock"></i>
+                                        </div>
+                                    </div>
+                                    <div class="cp-field">
+                                        <h5>New Password</h5>
+                                        <div class="cpp-fiel">
+                                            <input type="text" name="new-password" placeholder="New Password">
+                                            <i class="fa fa-lock"></i>
+                                        </div>
+                                    </div>
+                                    <div class="cp-field">
+                                        <h5>Repeat Password</h5>
+                                        <div class="cpp-fiel">
+                                            <input type="text" name="repeat-password" placeholder="Repeat Password">
+                                            <i class="fa fa-lock"></i>
+                                        </div>
+                                    </div>
+                                    <div class="cp-field">
+                                        <h5><a href="#" title="">Forgot Password?</a></h5>
+                                    </div>
+                                    <div class="save-stngs pd2">
+                                        <ul>
+                                            <li><button type="submit">Save Setting</button></li>
+                                            <li><button type="submit">Restore Setting</button></li>
+                                        </ul>
+                                    </div><!--save-stngs end-->
+                                </form>
+                            </div><!--acc-setting end-->
+                        </div>
+                        <div class="tab-pane fade" id="nav-notification" role="tabpanel" aria-labelledby="nav-notification-tab">
+                            <div class="acc-setting">
+                                <h3>Profile Picture Settings</h3>
+                                <div class="col-lg-12">
+                                    {% if user.image== null %}
+                                        <a href="javascript:openWin('{{ path('userpanel_photo')  }}','','toolbar=no,location=no,directories=0,status=no,top=100,left=200,menuBar=no,scrollBars=no,resizable=no,width=600,height=500');"><img src="{{ asset('uploads') }}\addphoto.png" alt="UserImage" height="100"></a>
+                                    {% else %}
+                                    <a href="javascript:openWin('{{ path('userpanel_photo')  }}','','toolbar=no,location=no,directories=0,status=no,top=100,left=200,menuBar=no,scrollBars=no,resizable=no,width=600,height=500');"><img src="{{ asset('uploads') }}\{{ user.image }}" alt="UserImage" height="300"></a>
+                                    {% endif %}
+                                </div>
+                                <p style="font-style: italic">Güncellemek için fotoğrafa tıklayınız...</p>
+                            </div><!--acc-setting end-->
+                        </div>
+                        <div class="tab-pane fade" id="nav-requests" role="tabpanel" aria-labelledby="nav-requests-tab">
+                            <div class="acc-setting">
+                                <h3>Stats</h3>
+                                <div class="profile-bx-details">
+                                    <div class="row">
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <div class="profile-bx-info">
+                                                <div class="pro-bx">
+                                                    <div class="bx-info">
+                                                        <h3>{{ totalview }}</h3>
+                                                        <h5>Total View</h5>
+                                                    </div><!--bx-info end-->
+                                                </div><!--pro-bx end-->
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+                                            </div><!--profile-bx-info end-->
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <div class="profile-bx-info">
+                                                <div class="pro-bx">
+                                                    <img src="images\pro-icon2.png" alt="">
+                                                    <div class="bx-info">
+                                                        <h3>{{ totalresearch }}</h3>
+                                                        <h5>Total Research</h5>
+                                                    </div><!--bx-info end-->
+                                                </div><!--pro-bx end-->
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+                                            </div><!--profile-bx-info end-->
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 col-sm-12">
+                                            <div class="profile-bx-info">
+                                                <div class="pro-bx">
+                                                    <img src="images\pro-icon3.png" alt="">
+                                                    <div class="bx-info">
+                                                        <h3>{{ totalquestion }}</h3>
+                                                        <h5>Total Question</h5>
+                                                    </div><!--bx-info end-->
+                                                </div><!--pro-bx end-->
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+                                            </div><!--profile-bx-info end-->
+                                        </div>
+                                        <!--<div class="col-lg-3 col-md-6 col-sm-12">
+                                            <div class="profile-bx-info">
+                                                <div class="pro-bx">
+                                                    <img src="images\pro-icon4.png" alt="">
+                                                    <div class="bx-info">
+                                                        <h3>130</h3>
+                                                        <h5>Total Projects</h5>
+                                                    </div><--bx-info end->
+                                                </div><--pro-bx end->
+                                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing.</p>
+                                            </div><!-profile-bx-info end->
+                                        </div>-->
+                                    </div>
+                                </div><!--profile-bx-details end-->
+                                <div class="pro-work-status">
+                                    <!-- <h4>Work Status  -  Last Months Working Status</h4> -->
+                                </div><!--pro-work-status end-->
+                            </div><!--acc-setting end-->
+                        </div>
+                        <div class="tab-pane fade" id="nav-deactivate" role="tabpanel" aria-labelledby="nav-deactivate-tab">
+                            <div class="acc-setting">
+                                <h3>Deactivate Account</h3>
+                                <form>
+                                    <div class="cp-field">
+                                        <h5>Email</h5>
+                                        <div class="cpp-fiel">
+                                            <input type="text" name="email" placeholder="Email">
+                                            <i class="fa fa-envelope"></i>
+                                        </div>
+                                    </div>
+                                    <div class="cp-field">
+                                        <h5>Password</h5>
+                                        <div class="cpp-fiel">
+                                            <input type="password" name="password" placeholder="Password">
+                                            <i class="fa fa-lock"></i>
+                                        </div>
+                                    </div>
+                                    <div class="cp-field">
+                                        <h5>Please Explain Further</h5>
+                                        <textarea></textarea>
+                                    </div>
+                                    <div class="cp-field">
+                                        <div class="fgt-sec">
+                                            <input type="checkbox" name="cc" id="c4">
+                                            <label for="c4">
+                                                <span></span>
+                                            </label>
+                                            <small>Email option out</small>
+                                        </div>
+                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pretium nulla quis erat dapibus, varius hendrerit neque suscipit. Integer in ex euismod, posuere lectus id,</p>
+                                    </div>
+                                    <div class="save-stngs pd3">
+                                        <ul>
+                                            <li><button type="submit">Save Setting</button></li>
+                                            <li><button type="submit">Restore Setting</button></li>
+                                        </ul>
+                                    </div><!--save-stngs end-->
+                                </form>
+                            </div><!--acc-setting end-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!--account-tabs-setting end-->
+        </div>
+    </section>
+{% endblock %}

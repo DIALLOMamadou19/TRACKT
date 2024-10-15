@@ -1,0 +1,131 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+use App\Repository\QuestionsRepository;
+use App\Repository\ResearchRepository;
+use App\Repository\UserinfoRepository;
+use App\Repository\UserRepository;
+use phpDocumentor\Reflection\Types\Integer;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+/**
+* @Route("/userpanel")
+*/
+class UserpanelController extends AbstractController
+{
+    /**
+     * @Route("/", name="userpanel_index")
+     */
+    public function index(UserinfoRepository $userinfoRepository,ResearchRepository $researchRepository,QuestionsRepository $questionsRepository)
+    {
+        $totalview=0;
+        $user=$this->getUser();
+        $userid= $user->getID();
+
+        $re = $researchRepository->findBy(array('userid' => $userid));
+
+        for ($i = 0; $i < count($re); $i++) {
+            $totalview+=$re[$i]->getView();
+        }
+        $qu = $questionsRepository->findBy(array('ruid' => $userid));
+
+
+
+        return $this->render('userpanel/index.html.twig', [
+            'user' => $user,
+            'id' => $userid,
+            'totalquestion' => count($qu),
+            'totalresearch' => count($re),
+            'totalview' => $totalview,
+            'userinfos' => $userinfoRepository
+                ->findBy(['userid'=> $userid]),
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/update", name="userpanel_update", methods="POST")
+     */
+    public function user_update($id, Request $request):Response
+    {
+        $em=$this->getDoctrine()->getManager();
+        $sql="UPDATE user SET phone=:phone,name=:name,location=:location,school=:school,department=:department,website=:website,info=:info,skills=:skills,fax=:fax,email2=:email2,roomno=:roomno,workarea=:workarea,titleandtasks=:titleandtasks,edulis=:edulis,edudoc=:edudoc,edumaster=:edumaster,thesismaster=:thesismaster,thesisdoc=:thesisdoc WHERE id=:id";
+        $statement=$em->getConnection()->prepare($sql);
+        $statement->bindValue('phone', $request->request->get('phone'));
+        $statement->bindValue('name', $request->request->get('name'));
+        $statement->bindValue('location', $request->request->get('location'));
+        $statement->bindValue('school', $request->request->get('school'));
+        $statement->bindValue('department', $request->request->get('department'));
+        $statement->bindValue('website', $request->request->get('website'));
+        $statement->bindValue('info', $request->request->get('info'));
+        $statement->bindValue('skills', $request->request->get('skills'));
+        $statement->bindValue('fax', $request->request->get('fax'));
+        $statement->bindValue('email2', $request->request->get('email2'));
+        $statement->bindValue('roomno', $request->request->get('roomno'));
+        $statement->bindValue('workarea', $request->request->get('workarea'));
+        $statement->bindValue('titleandtasks', $request->request->get('titleandtasks'));
+        $statement->bindValue('edulis', $request->request->get('edulis'));
+        $statement->bindValue('edudoc', $request->request->get('edudoc'));
+        $statement->bindValue('edumaster', $request->request->get('edumaster'));
+        $statement->bindValue('thesismaster', $request->request->get('thesismaster'));
+        $statement->bindValue('thesisdoc', $request->request->get('thesisdoc'));
+
+        $statement->bindValue('id', $id);
+        $statement->execute();
+
+        return $this->redirectToRoute('userpanel_index',array('id'=>$id));
+    }
+
+    /**
+     * @Route("/photo", name="userpanel_photo", methods={"GET","POST"})
+     */
+    public function photo(Request $request,UserRepository $userRepository): Response
+    {
+
+        $id=$this->getUser()->getID();
+        if ($request->files->get('filename')) {
+            $filen =$request->files->get('filename');
+            $fileName = $this->generateUniqueFileName().'.'.$filen->guessExtension();
+            try {
+                $filen->move(
+                    $this->getParameter('upload_directory'),
+                    $fileName
+                );
+            } catch (FileException $e) {
+                // ... handle exception if something happens during file upload
+            }
+
+            $user = $userRepository->find($id);
+            $user->setImage($fileName);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('userpanel_photo', [
+                'id' => $id,
+            ]);
+        }
+
+        $user = $userRepository->find($id);
+
+        return $this->render('userpanel/photo.html.twig',[
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * @return string
+     */
+    private function generateUniqueFileName()
+    {
+        // md5() reduces the similarity of the file names generated by
+        // uniqid(), which is based on timestamps
+        return md5(uniqid());
+    }
+
+}

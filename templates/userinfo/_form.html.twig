@@ -1,0 +1,20 @@
+<div class="post-project-fields" style="padding-top: 0px">
+
+    <form method="post">
+        <div class="pro-work-status">
+            <h4>Edit</h4>
+        </div><!--pro-work-status end-->
+        <input type="hidden" name="userinfo[userid]" value="{{ app.user.id }}">
+        <input type="hidden" name="userinfo[categoryid]" value="{{ userinfo.categoryid }}">
+        <div class="cpp-fiel">
+            <input type="text" name="userinfo[title]" placeholder="Başlık" value="{{ userinfo.title }}">
+        </div>
+        <div class="cpp-fiel">
+            <input type="text" name="userinfo[link]" placeholder="Link" value="{{ userinfo.link }}">
+        </div>
+        <ul>
+            <li><button type="submit">Güncelle</button></li>
+        </ul>
+    </form>
+    {{ include('userinfo/_delete_form.html.twig') }}
+</div>
