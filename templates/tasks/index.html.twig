@@ -4,7 +4,7 @@
     <div class="flex h-screen">
         {% include 'components/sidebar.html.twig' %}
         <div class="flex flex-col flex-grow px-6 pt-6">
-            {% include 'components/topbar.html.twig' %}
+            {% include 'components/topbar_task.html.twig' %}
             <main class="flex-grow overflow-hidden py-6">
                 <div class="flex bg-white h-full rounded-2xl border">
                     {% for column, tasks in groupedTasks %}
