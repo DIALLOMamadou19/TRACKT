@@ -17,7 +17,7 @@ class Projet
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nomProjet = null;
+    private ?string $nom_projet = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -56,12 +56,12 @@ class Projet
 
     public function getNomProjet(): ?string
     {
-        return $this->nomProjet;
+        return $this->nom_projet;
     }
 
-    public function setNomProjet(string $nomProjet): static
+    public function setNomProjet(string $nom_projet): static
     {
-        $this->nomProjet = $nomProjet;
+        $this->nom_projet = $nom_projet;
 
         return $this;
     }
@@ -133,25 +133,25 @@ class Projet
     }
 
     /**
-     * @return Collection<int, User>
+     * @return Collection<int, user>
      */
     public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    public function addUser(User $User): static
+    public function addUser(user $user): static
     {
-        if (!$this->users->contains($User)) {
-            $this->users->add($User);
+        if (!$this->users->contains($user)) {
+            $this->users->add($user);
         }
 
         return $this;
     }
 
-    public function removeUser(User $User): static
+    public function removeUser(User $user): static
     {
-        $this->users->removeElement($User);
+        $this->users->removeElement($user);
 
         return $this;
     }

@@ -1,0 +1,37 @@
+{{ form_start(form, {'attr': {'id': 'editTaskForm'}}) }}
+<div class="mt-3 px-7 py-3">
+    <div class="mb-6">
+        {{ form_label(form.nomTache, 'Name', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+        {{ form_widget(form.nomTache, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black pl-4'}}) }}
+    </div>
+    <div class="mb-6">
+        {{ form_label(form.descriptionTache, 'Description', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+        {{ form_widget(form.descriptionTache, {'attr': {'class': 'flex h-32 w-full rounded-2xl border shadow-sm border-black p-2 pl-4'}}) }}
+    </div>
+    <div class="flex flex-row space-x-4">
+        <div class="mb-6 flex-1">
+            {{ form_label(form.dateDebut, 'Start Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+            {{ form_widget(form.dateDebut, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-20'}}) }}
+        </div>
+        <div class="mb-6 flex-1">
+            {{ form_label(form.dateEcheance, 'End Date', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+            {{ form_widget(form.dateEcheance, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black text-center pl-20'}}) }}
+        </div>
+    </div>
+    <div class="mb-6">
+        {{ form_label(form.status, 'Status', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+        {{ form_widget(form.status, {'attr': {'class': 'flex w-full h-14 rounded-full border shadow-sm border-black pl-4'}}) }}
+    </div>
+    <div class="mb-6">
+        {{ form_label(form.user, 'Assign Users', {'label_attr': {'class': 'font-medium block text-left mb-2 ml-2'}}) }}
+        <div id="editUserList" class="border border-gray-300 rounded-lg p-3 max-h-60 overflow-y-auto">
+            {% for user in form.user %}
+                <div class="flex items-center mb-2 edit-user-item">
+                    {{ form_widget(user, {'attr': {'class': 'mr-2'}}) }}
+                    {{ form_label(user, null, {'label_attr': {'class': 'text-sm'}}) }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
