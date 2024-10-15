@@ -17,13 +17,13 @@ class Tache
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $nom_tache = null;
+    private ?string $nomTache = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description_tache = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $date_echeance = null;
+    private ?\DateTimeInterface $dateEcheance = null;
 
     #[ORM\ManyToOne(inversedBy: 'taches')]
     #[ORM\JoinColumn(nullable: false)]
@@ -65,12 +65,12 @@ class Tache
 
     public function getNomTache(): ?string
     {
-        return $this->nom_tache;
+        return $this->nomTache;
     }
 
-    public function setNomTache(string $nom_tache): static
+    public function setNomTache(string $nomTache): static
     {
-        $this->nom_tache = $nom_tache;
+        $this->nomTache = $nomTache;
 
         return $this;
     }
@@ -89,12 +89,12 @@ class Tache
 
     public function getDateEcheance(): ?\DateTimeInterface
     {
-        return $this->date_echeance;
+        return $this->dateEcheance;
     }
 
-    public function setDateEcheance(?\DateTimeInterface $date_echeance): static
+    public function setDateEcheance(?\DateTimeInterface $dateEcheance): static
     {
-        $this->date_echeance = $date_echeance;
+        $this->dateEcheance = $dateEcheance;
 
         return $this;
     }

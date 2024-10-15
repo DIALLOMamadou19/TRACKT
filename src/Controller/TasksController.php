@@ -92,4 +92,4 @@ class TasksController extends AbstractController
 
         return new JsonResponse(['message' => 'Task deleted successfully'], 200);
     }
-}
+}   
