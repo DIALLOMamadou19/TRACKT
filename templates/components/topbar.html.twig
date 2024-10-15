@@ -1,9 +1,19 @@
 <div class="flex justify-between items-center w-full px-6 py-3 bg-white rounded-2xl border">
     <div class="flex items-center">
-        <h1 class="text-lg font-semibold text-gray-800">Projet Application de tâche collaboratives</h1>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-        </svg>
+        <div class="relative">
+            <select id="projetDropdown" class="appearance-none bg-transparent border-none pr-8 focus:outline-none text-lg font-semibold text-gray-800">
+                {% for projet in projets %}
+                    <option value="{{ projet.id }}" {% if projet.id == currentProjet.id %}selected{% endif %}>
+                        {{ projet.nomProjet }}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
+            </div>
+        </div>
     </div>
     <div class="flex items-center">
         <a href="#" class="mr-4 text-gray-600 hover:text-gray-800">
@@ -17,3 +27,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById('projetDropdown').addEventListener('change', function() {
+        window.location.href = '{{ path('app_tasks') }}/' + this.value;
+    });
+</script>

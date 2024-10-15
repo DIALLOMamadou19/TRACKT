@@ -10,7 +10,7 @@
                     {% for column, tasks in groupedTasks %}
                         <div class="flex-1 flex flex-col min-w-0 p-4 pb-0 {% if column == 'In progress' %}border-l-8 border-r-8 border-gray-50{% endif %}">
                             <h2 class="text-2xl font-semibold mb-4 text-center opacity-70">{{ column }}</h2>
-                            <div class="scrollable-column overflow-y-auto flex-grow px-2">
+                            <div class="scrollable-column overflow-y-auto flex-grow px-2 pb-4">
                                 <div class="space-y-8">
                                     {% for task in tasks %}
                                         <div class="bg-beige p-4 m-4 mx-auto rounded-2xl shadow-md task-card cursor-pointer h-[120px] flex flex-col justify-between"
@@ -259,7 +259,7 @@
             // Confirmer la suppression d'une tâche
             confirmDeleteBtn.onclick = function() {
                 if (currentTaskId) {
-                    axios.delete(`/tasks/${currentTaskId}`)
+                    axios.delete(`/tasks/delete/${currentTaskId}`)
                         .then(function (response) {
                             console.log('Task deleted successfully');
                             deleteConfirmModal.style.display = "none";
@@ -267,16 +267,30 @@
                         })
                         .catch(function (error) {
                             console.error('Error deleting task:', error);
+                            if (error.response) {
+                                switch (error.response.status) {
+                                    case 404:
+                                        alert('The task you\'re trying to delete could not be found. It may have been already deleted.');
+                                        break;
+                                    default:
+                                        alert('An error occurred while trying to delete the task. Please try again later.');
+                                }
+                            } else {
+                                alert('An error occurred while trying to delete the task. Please try again later.');
+                            }
                         });
                 }
             }
 
-            // Soumettre le formulaire de nouvelle tâche
             taskForm.onsubmit = function(e) {
                 e.preventDefault();
                 const formData = new FormData(taskForm);
 
-                axios.post('/task/new', formData)
+                // Récupère l'ID du projet à partir de l'URL actuelle
+                const urlParts = window.location.pathname.split('/');
+                const projetId = urlParts[2]; // Assurez-vous que c'est bien la position du projetId dans l'URL
+
+                axios.post(`/tasks/${projetId}/new`, formData)
                     .then(function (response) {
                         console.log(response.data);
                         newTaskModal.style.display = "none";
@@ -285,7 +299,7 @@
                     .catch(function (error) {
                         console.error('Error:', error);
                     });
-            }
+            };
 
             // Fonction pour ouvrir le modal d'édition
             function openEditModal(taskId) {

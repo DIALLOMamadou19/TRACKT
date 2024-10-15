@@ -35,9 +35,9 @@ class Projet
     private Collection $taches;
 
     /**
-     * @var Collection<int, user>
+     * @var Collection<int, User>
      */
-    #[ORM\ManyToMany(targetEntity: user::class, inversedBy: 'projets')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'projets')]
     private Collection $users;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -149,7 +149,7 @@ class Projet
         return $this;
     }
 
-    public function removeUser(user $user): static
+    public function removeUser(User $user): static
     {
         $this->users->removeElement($user);
 
