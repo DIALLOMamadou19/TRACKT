@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Projet;
 use App\Entity\Tache;
+use App\Form\TaskEditFormType;
 use App\Form\TaskFormType;
 use App\Repository\TacheRepository;
 use App\Repository\UserRepository;
@@ -100,35 +101,22 @@ class TasksController extends AbstractController
         return new JsonResponse(['message' => 'Task deleted successfully'], 200);
     }
 
-    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['POST'])]
-    public function edit(Request $request, Tache $task, EntityManagerInterface $entityManager, UserRepository $userRepository): Response
+    #[Route('/tasks/{id}/edit', name: 'app_task_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Tache $task, EntityManagerInterface $entityManager): Response
     {
-        $data = json_decode($request->getContent(), true);
+        $form = $this->createForm(TaskEditFormType::class, $task);
+        $form->handleRequest($request);
 
-        $task->setNomTache($data['nom_tache']);
-        $task->setDescriptionTache($data['description_tache']);
-        $task->setDateDebut(new \DateTime($data['date_debut']));
-        $task->setDateEcheance(new \DateTime($data['date_echeance']));
-        $task->setStatus($data['status']);
-
-        // Gérer les utilisateurs assignés
-        if (isset($data['users'])) {
-            // Supprimer tous les utilisateurs actuellement assignés
-            foreach ($task->getUser() as $user) {
-                $task->removeUser($user);
+        if ($request->isMethod('POST')) {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $entityManager->flush();
+                return $this->json(['message' => 'Task updated successfully']);
             }
-
-            // Ajouter les nouveaux utilisateurs assignés
-            foreach ($data['users'] as $userId) {
-                $user = $userRepository->find($userId);
-                if ($user) {
-                    $task->addUser($user);
-                }
-            }
+            return $this->json(['errors' => $form->getErrors(true)->__toString()], 400);
         }
 
-        $entityManager->flush();
-
-        return $this->json(['message' => 'Task updated successfully']);
+        return $this->render('tasks/_edit_form.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
