@@ -1,7 +1,37 @@
-body {
-    background-color: lightgray;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.scrollable-column {
+    scrollbar-width: none; /* Pour Firefox */
+    -ms-overflow-style: none; /* Pour Internet Explorer et Edge */
+}
+.scrollable-column::-webkit-scrollbar {
+    display: none; /* Pour Chrome, Safari et Opera */
+}
+
+.bg-yellow-100 {
+    background-color: #fef3c7 !important;
+}
+
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4); /* Pour un effet semi-transparent */
+    backdrop-filter: blur(10px); /* Applique un flou sur l'arrière-plan */
+    z-index: 999;
+}
+
+.modal-content {
+    position: relative;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    z-index: 1000; /* S'assure que la pop-up est bien au-dessus du fond */
+}
+
+body {
+}

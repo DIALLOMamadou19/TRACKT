@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'custom-yellow': '#FAE150', // Ajoute ta couleur personnalisée ici
+        'primary': '#FAE150', // Ajoute ta couleur personnalisée ici
+        'beige': '#F7F5F4',
       },
     },
   },

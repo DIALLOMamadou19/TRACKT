@@ -1,5 +1,26 @@
+# routes.yaml
+
+# Importation automatique des routes des contrôleurs en utilisant des annotations
 controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
+    resource: '../src/Controller/'
     type: attribute
+
+# Route explicite pour le dashboard
+dashboard:
+    path: /dashboard
+    controller: App\Controller\DashboardController::index
+
+# Route explicite pour les tâches
+task_index:
+    path: /tasks
+    controller: App\Controller\TaskController::index
+
+projet_index:
+    path: /projet
+    controller: App\Controller\ProjetController::index
+
+# controllers:
+#     resource:
+#         path: ../src/Controller/
+#         namespace: App\Controller\DashboardController::index
+#     type: attribute
