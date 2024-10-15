@@ -4,7 +4,8 @@
 namespace App\Controller;
 
 use App\Entity\Projet; // Assurez-vous d'importer l'entité correcte
-use Doctrine\ORM\EntityManagerInterface; // Importer l'interface de l'EntityManager
+use Doctrine\ORM\EntityManagerInterface;
+// Importer l'interface de l'EntityManager
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
