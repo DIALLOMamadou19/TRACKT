@@ -16,6 +16,16 @@ class TacheRepository extends ServiceEntityRepository
         parent::__construct($registry, Tache::class);
     }
 
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->orderBy('t.status', 'ASC')
+            ->addOrderBy('t.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     //    /**
     //     * @return Tache[] Returns an array of Tache objects
     //     */

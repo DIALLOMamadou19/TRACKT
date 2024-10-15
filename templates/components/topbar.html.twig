@@ -1,0 +1,57 @@
+<div class="flex justify-between items-center w-full px-6 py-3 bg-white rounded-2xl border"> 
+    <div class="flex items-center relative">
+        <!-- Bouton pour afficher le projet actuel -->
+        <button type="button" class="inline-flex justify-between w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+            Liste des mes projets 📜
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+
+        <!-- Dropdown Menu -->
+        <div class="absolute right-0 z-10 hidden bg-white rounded-md shadow-lg mt-2 w-48" id="dropdownMenu"> <!-- Ajustement de mt-1 à mt-2 -->
+            <ul class="py-1" aria-labelledby="dropdownMenuButton">
+                {% for projet in projets %}
+                    <li class="px-4 py-2 text-gray-700 hover:bg-gray-100 cursor-pointer" onclick="openProject('{{ projet.id }}')">{{ projet.nomProjet }}</li> <!-- Ajout de l'événement onclick -->
+                {% else %}
+                    <li class="px-4 py-2 text-gray-500">Aucun projet trouvé.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex items-center">
+        <a href="#" class="mr-4 text-gray-600 hover:text-gray-800">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+        </a>
+
+        <div class="flex items-center">
+            <span class="mr-2 text-sm text-gray-600">Mon Compte</span>
+            <div class="w-8 h-8 bg-yellow-300 border-black border rounded-full"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Script pour gérer le dropdown -->
+<script>
+    document.querySelector('button').addEventListener('click', function() {
+        const dropdown = document.getElementById('dropdownMenu');
+        dropdown.classList.toggle('hidden');
+    });
+
+    // Fermer le dropdown si on clique en dehors
+    window.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('dropdownMenu');
+        if (!event.target.closest('button') && !dropdown.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // Fonction pour ouvrir un projet dans une nouvelle balise <main>
+    function openProject(projectId) {
+        // Logique pour ouvrir un projet, par exemple rediriger vers une page projet
+        window.location.href = '/projet/' + projectId; // Remplacez cela par votre logique
+    }
+</script>
