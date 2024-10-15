@@ -7,9 +7,43 @@
                 <div class="w-10 h-10 bg-yellow-300 border border-black rounded-full"></div>
                 <span class="ml-4 text-2xl font-semibold">Track't</span>
             </div>
-
+ 
             <nav class=" flex flex-col flex-grow">
-                <ul>
+            <ul>
+    <li class="px-6 py-4 hover:bg-yellow-100 border-t text-md font-semibold 
+        {% if app.request.attributes.get('_route') == 'dashboard' %} bg-yellow-100 {% endif %}">
+        <a href="{{ path('dashboard') }}" class="flex items-center text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            Dashboard
+        </a>
+    </li>
+    <li class="px-6 py-4 hover:bg-yellow-100 border-t text-md font-semibold 
+        {% if app.request.attributes.get('_route') == 'task_index' %} bg-yellow-100 {% endif %}">
+        <a href="{{ path('task_index') }}" class="flex items-center text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 11l3 3L22 4"></path>
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+            </svg>
+            Tasks
+        </a>
+    </li>
+    <li class="px-6 py-4 hover:bg-yellow-100 border-t text-md font-semibold 
+        {% if app.request.attributes.get('_route') == 'project_index' %} bg-yellow-100 {% endif %}">
+        <a href="{{ path('dashboard') }}" class="flex items-center text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"></path>
+            </svg>
+            Projects
+        </a>
+    </li>
+</ul>
+
+                {# <ul>
                     <li class="px-6 py-4 hover:bg-yellow-100 border-t text-md font-semibold">
                         <a href="{{ path('dashboard') }}" class="flex items-center text-gray-700">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -38,7 +72,7 @@
                             Projects
                         </a>
                     </li>
-                </ul>
+                </ul> #}
 
                 <ul class="mt-auto">
                     <li class="px-6 py-4 hover:bg-yellow-100 text-md font-semibold">
