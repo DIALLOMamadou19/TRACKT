@@ -1,14 +1,18 @@
-{# templates/dashboard/index.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block body %}
     <div class="flex h-screen">
         {% include 'components/sidebar.html.twig' %}
-        <div class="flex flex-col flex-grow px-6 pt-6">
+        
+        
+        <div class="flex flex-col flex-grow px-6 pt-6 overflow-y-auto">
             {% include 'components/topbar.html.twig' %}
-            <main class="flex-grow overflow-hidden py-6">
-                <div class="flex bg-white h-60 max-h-90 rounded-2xl border mx-auto w-full">
-                    <div class="overflow-x-auto w-full">
+            
+            
+            <main class="flex-grow py-6">
+              
+                <div class="flex bg-white h-65 max-h-90 rounded-2xl border mx-auto w-full overflow-x-auto">
+                    <div class="w-full">
                         <h2 class="text-lg font-bold mb-4 mt-6 text-center">Mes Tâches ({{ totalTasks }})</h2>
                         <table class="min-w-full bg-white rounded-lg shadow-md border">
                             <thead>
@@ -30,34 +34,20 @@
                                                 <input type="checkbox" class="form-checkbox text-yellow-400" onchange="updateTaskStatus({{ task.id }})">
                                             {% endif %}
                                         </td>
-                                        <td class="border-b border-gray-300 px-4 py-2">
-                                            <span class="{% if task.projet.nomProjet == 'Projet A' %} bg-blue-100 {% elseif task.projet.nomProjet == 'Projet B' %} bg-green-100 {% else %} bg-gray-100 {% endif %} px-2 py-1 rounded-full">
-                                                {{ task.projet.nomProjet }}
-                                            </span>
-                                        </td>
+                                        <td class="border-b border-gray-300 px-4 py-2">{{ task.projet.nomProjet }}</td>
                                         <td class="border-b border-gray-300 px-4 py-2">{{ task.nomTache }}</td>
-                                        <td class="border-b border-gray-300 px-4 py-2">
-                                            {% set dueDate = task.dateEcheance|date('Y-m-d') %}
-                                            {% set today = "now"|date('Y-m-d') %}
-                                            {% if dueDate == today %}
-                                                Aujourd'hui
-                                            {% elseif dueDate > today %}
-                                                {{ (dueDate|date_modify('-' ~ today)|date('d')) }} jours restants
-                                            {% else %}
-                                                {{ task.dateEcheance|date('d/m/Y') }}
-                                            {% endif %}
-                                        </td>
+                                        <td class="border-b border-gray-300 px-4 py-2">{{ task.dateEcheance|date('d/m/Y') }}</td>
                                         <td class="border-b border-gray-300 px-4 py-2">
                                             {% for user in task.user %}
                                                 <span class="inline-block h-8 w-8 rounded-full bg-yellow-100 text-center">
-                                                    {{ user.id }} 
+                                                    {{ user.id }}
                                                 </span>
                                             {% endfor %}
                                         </td>
                                     </tr>
                                 {% else %}
                                     <tr>
-                                        <td colspan="4" class="border-b border-gray-300 px-4 py-2 text-center">Aucune tâche à afficher</td>
+                                        <td colspan="5" class="border-b border-gray-300 px-4 py-2 text-center">Aucune tâche à afficher</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
@@ -65,31 +55,33 @@
                     </div>
                 </div>
                 
+                <!-- Autres contenus -->
                 <div class="flex justify mt-12 space-x-4">
                     <div class="flex bg-white h-80 rounded-2xl border w-1/2">
-                        <div id="calendar"></div> <!-- Conteneur pour le calendrier -->
+                        <div id="calendar"></div>
                     </div>
                     <div class="flex bg-white h-80 rounded-2xl border w-1/3"></div>
-                </div>
+                </div><!-- Bouton pour ajouter une tâche -->
+    <button id="openModalBtn" class="fixed bottom-8 right-8 bg-primary border border-black text-black font-medium py-2.5 px-5 rounded-full shadow-lg">
+        Nouvelle Tâche
+    </button>
             </main>
         </div>
     </div>
 
-    <button id="openModalBtn" class="fixed bottom-8 right-8 bg-primary border border-black text-black font-medium py-2.5 px-5 rounded-full shadow-lg">
-        Nouvelle Tâche
-    </button>
+    
 
-    <!-- Inclusion des fichiers FullCalendar via CDN -->
+    <!-- Scripts pour le calendrier FullCalendar -->
     <link href="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/core@6.1.8/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@fullcalendar/daygrid@6.1.8/main.min.js"></script>
-
+    
     <script>
-        function updateTaskStatus(taskId) {
+     function updateTaskStatus(taskId) {
             let checkbox = event.target;
             let status = checkbox.checked ? 'Done' : 'To do';
 
-            fetch(`/tasks/${taskId}/status`, {
+            fetch(/tasks/${taskId}/status, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,10 +105,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
 
-            // Initialisation du calendrier FullCalendar
+           
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                locale: 'fr', // Pour afficher le calendrier en français
+                locale: 'fr', 
                 dateClick: function(info) {
                     alert('Date: ' + info.dateStr);
                 },
@@ -127,7 +119,7 @@
                         backgroundColor: '#F9D71C', // Jaune foncé
                         allDay: true
                     },
-                    // Dynamiser les dates des tâches depuis Twig
+                    
                     {% for task in tasks %}
                     {
                         title: '{{ task.nomTache }}',

@@ -5,50 +5,50 @@
 {% block body %}
 
     <div class="flex h-screen">
-        <!-- Menu Vertical à Gauche -->
-        {% include 'components/sidebar.html.twig' %}
+    <!-- Menu Vertical à Gauche -->
+    {% include 'components/sidebar.html.twig' %}
 
-        <!-- 2. Partie Principale (Header + Contenu) -->
-        <div class="flex flex-col flex-grow px-6 pt-6">
-            {% include 'components/topbar.html.twig' %}
-    
-            <!-- Main Content -->
-            <main class="flex-grow overflow-hidden py-6 px-6 pt-6 mt-6 bg-white border rounded-lg">
-                <!-- projet Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-white rounded-lg">
-                    {% for projet in projets %}
-                        <div class="bg-gray-100 p-4 rounded-lg shadow-md">
-                            <h4 class="text-lg font-semibold mb-2">{{ projet.nomProjet }}</h4>
-                            <p class="text-gray-600">{{ projet.description }}</p>
-                            <div class="flex space-x-6 ">
-                                <!-- Bouton de modification -->
-                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 " onclick="openEditModal({{ projet.id }}, '{{ projet.nomProjet }}', '{{ projet.description }}')">
-                                    Modifier
-                                </button>
-
-                                <!-- Bouton de suppression qui ouvre le modal -->
-                                <button class="bg-red-500 text-white px-4 py-2 rounded mt-4" onclick="openModal({{ projet.id }}, '{{ csrf_token('delete_projet_' ~ projet.id) }}')">
-                                    Supprimer
-                                </button>
-                            </div>
-
-                        </div>
-                    {% else %}
-                        <p class="flex justify-center px-6 py-6 pl-8 mt-6">Aucun projet disponible.</p>
-                    {% endfor %}
-                </div>
-
-                
-
-                <!-- Add projet Button -->
-                <div class="flex justify-end mt-6">
-                    <button id="create-projet-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg shadow">
-                        Ajouter un projet
-                    </button>
-                </div>
-            </main>
+    <!-- 2. Partie Principale (Header + Contenu) -->
+    <div class="flex flex-col flex-grow px-6 pt-6">
+        {% include 'components/topbar.html.twig' %}
+        
+        <!-- Add projet Button (Indépendant de la liste) -->
+        <div class="flex justify-end mb-4 mt-4">
+            <button id="create-projet-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg shadow">
+                Ajouter un projet
+            </button>
         </div>
+
+        <!-- Main Content -->
+        <main class="flex flex-col h-90 bg-white border rounded-lg">
+            <!-- projet Cards (Scrollable) -->
+            <div class="flex-grow overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-white p-6 rounded-lg">
+                {% for projet in projets %}
+                    <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                        <h4 class="text-lg font-semibold mb-2">{{ projet.nomProjet }}</h4>
+                        <p class="text-gray-600">{{ projet.description }}</p>
+                        <div class="flex space-x-6">
+                            <!-- Bouton de modification -->
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4" 
+                                    onclick="openEditModal({{ projet.id }}, '{{ projet.nomProjet }}', '{{ projet.description }}')">
+                                Modifier
+                            </button>
+
+                            <!-- Bouton de suppression qui ouvre le modal -->
+                            <button class="bg-red-500 text-white px-4 py-2 rounded mt-4" 
+                                    onclick="openModal({{ projet.id }}, '{{ csrf_token('delete_projet_' ~ projet.id) }}')">
+                                Supprimer
+                            </button>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="flex justify-center px-6 py-6">Aucun projet disponible.</p>
+                {% endfor %}
+            </div>
+        </main>
     </div>
+</div>
+
 
     <!-- Modal de confirmation de suppression-->
     <div id="confirm-delete-modal" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
