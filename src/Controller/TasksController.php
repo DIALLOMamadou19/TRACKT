@@ -75,6 +75,22 @@ class TasksController extends AbstractController
         ]);
     }
 
+    #[Route('/tasks/{id}/status', name: 'update_task_status', methods: ['POST'])]
+public function updateTaskStatus(Request $request, Tache $task, EntityManagerInterface $entityManager): JsonResponse
+{
+    $data = json_decode($request->getContent(), true);
+    
+    if (isset($data['status'])) {
+        $task->setStatus($data['status']);
+        $entityManager->flush();
+
+        return new JsonResponse(['success' => true]);
+    }
+
+    return new JsonResponse(['success' => false], Response::HTTP_BAD_REQUEST);
+}
+
+
     #[Route('/tasks/{projetId}/new', name: 'app_task_new', methods: ['POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $projetId): JsonResponse
     {

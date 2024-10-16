@@ -7,5 +7,6 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-
+import { Calendar } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
 import './styles/app.css';

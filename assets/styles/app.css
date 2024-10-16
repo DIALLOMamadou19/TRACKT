@@ -14,6 +14,18 @@
     background-color: #fef3c7 !important;
 }
 
+#calendar {
+    height: 100%; /* Ajuste selon ton besoin */
+}
+
+.fc-day-today {
+    background-color: #EFB45C; 
+}
+
+.fc-day-ech {
+    background-color: #F9D71C; 
+}
+
 .modal-bg {
     position: fixed;
     top: 0;
