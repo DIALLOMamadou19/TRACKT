@@ -15,9 +15,10 @@ task_index:
     path: /tasks
     controller: App\Controller\TaskController::index
 
+# Route explicite pour les projets
 projet_index:
     path: /projet
-    controller: App\Controller\ProjetController::index
+    controller: App\Controller\ProjectsController::index
 
 # controllers:
 #     resource:

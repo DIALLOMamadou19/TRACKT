@@ -1,0 +1,181 @@
+{# templates/projet/projets.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="flex h-screen">
+        <!-- Menu Vertical à Gauche -->
+        {% include 'components/sidebar.html.twig' %}
+
+        <!-- 2. Partie Principale (Header + Contenu) -->
+        <div class="flex flex-col flex-grow px-6 pt-6">
+            {% include 'components/topbar.html.twig' %}
+    
+            <!-- Main Content -->
+            <main class="flex-grow overflow-hidden py-6 px-6 pt-6 mt-6 bg-white border rounded-lg">
+                <!-- projet Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 bg-white rounded-lg">
+                    {% for projet in projets %}
+                        <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+                            <h4 class="text-lg font-semibold mb-2">{{ projet.nomProjet }}</h4>
+                            <p class="text-gray-600">{{ projet.description }}</p>
+                            <div class="flex space-x-6 ">
+                                <!-- Bouton de modification -->
+                                <button class="bg-blue-500 text-white px-4 py-2 rounded mt-4 " onclick="openEditModal({{ projet.id }}, '{{ projet.nomProjet }}', '{{ projet.description }}')">
+                                    Modifier
+                                </button>
+
+                                <!-- Bouton de suppression qui ouvre le modal -->
+                                <button class="bg-red-500 text-white px-4 py-2 rounded mt-4" onclick="openModal({{ projet.id }}, '{{ csrf_token('delete_projet_' ~ projet.id) }}')">
+                                    Supprimer
+                                </button>
+                            </div>
+
+                        </div>
+                    {% else %}
+                        <p class="flex justify-center px-6 py-6 pl-8 mt-6">Aucun projet disponible.</p>
+                    {% endfor %}
+                </div>
+
+                
+
+                <!-- Add projet Button -->
+                <div class="flex justify-end mt-6">
+                    <button id="create-projet-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded-lg shadow">
+                        Ajouter un projet
+                    </button>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal de confirmation de suppression-->
+    <div id="confirm-delete-modal" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h3 class="text-lg font-semibold">Confirmer la suppression</h3>
+            <p>Êtes-vous sûr de vouloir supprimer ce projet ?</p>
+            <div class="flex justify-end mt-4">
+                <button id="cancel-delete" class="bg-gray-300 text-black px-4 py-2 rounded mr-2" onclick="closeModal()">Annuler</button>
+                <form id="delete-form" method="POST" action="">
+                    <input type="hidden" name="_token" id="delete-form-token">
+                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Confirmer</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for editing a project -->
+    <div id="edit-projet-modal" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-4/5 max-w-md">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-700">Modifier le projet</h3>
+                <button id="close-edit-modal" class="text-gray-500 hover:text-gray-800 focus:outline-none">&times;</button>
+            </div>
+            <form id="edit-form" method="POST" action="" class="space-y-6">
+                <div>
+                    <label for="edit-name" class="block text-sm font-medium text-gray-700">Nom</label>
+                    <input type="text" id="edit-name" name="name" required 
+                        class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <div>
+                    <label for="edit-description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="edit-description" name="description" rows="4" required 
+                            class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-yellow-500 focus:border-yellow-500"></textarea>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="w-full bg-yellow-500 text-white font-medium py-2 rounded-md hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for creating a new projet -->
+    <div id="create-projet-modal" class="fixed z-50 inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-4/5 max-w-md">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-lg font-semibold text-gray-700">Créer un nouveau projet</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-800 focus:outline-none">&times;</button>
+            </div>
+            <form action="{{ path('app_projet_create') }}" method="POST" class="space-y-6">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nom</label>
+                    <input type="text" id="name" name="name" required 
+                        class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-yellow-500 focus:border-yellow-500">
+                </div>
+                <div>
+                    <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea id="description" name="description" rows="4" required 
+                        class="mt-1 w-full border border-gray-300 rounded-md p-2 focus:ring-yellow-500 focus:border-yellow-500"></textarea>
+                </div>
+                <div>
+                    <h3 class="text-sm font-medium text-gray-700 mb-2">Utilisateurs assignés</h3>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-yellow-400 text-white rounded-full px-3 py-1 text-xs font-medium">User 1</span>
+                        <button type="button" class="bg-gray-100 hover:bg-gray-200 text-sm text-gray-600 px-2 py-1 rounded focus:outline-none">+ Ajouter participant</button>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="w-full bg-yellow-500 text-white font-medium py-2 rounded-md hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50">
+                        Créer le projet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Link your JavaScript here -->
+    <script src="{{ asset('build/app.js') }}"></script>
+
+    <!-- script JavaScript pour ajout -->
+    <script>
+        document.getElementById('create-projet-btn').addEventListener('click', function () {
+            document.getElementById('create-projet-modal').classList.remove('hidden');
+        });
+
+        document.getElementById('close-modal').addEventListener('click', function () {
+            document.getElementById('create-projet-modal').classList.add('hidden');
+        });
+    </script>
+
+    <!-- script JavaScript pour supprimer -->
+    <script>
+        function openModal(projetId, csrfToken) {
+            // Rendre la modale visible
+            document.getElementById('confirm-delete-modal').classList.remove('hidden');
+
+            // Mettre à jour l'action du formulaire avec l'ID du projet
+            const deleteForm = document.getElementById('delete-form');
+            deleteForm.action = `/projets/delete/${projetId}`;
+
+            // Mettre à jour le token CSRF
+            document.getElementById('delete-form-token').value = csrfToken;
+        }
+
+        function closeModal() {
+            // Cacher la modale
+            document.getElementById('confirm-delete-modal').classList.add('hidden');
+        }
+
+        document.getElementById('cancel-delete').addEventListener('click', closeModal);
+    </script>
+
+    <!-- script JavaScript pour edit -->
+    <script>
+        function openEditModal(projetId, nomProjet, description) {
+            document.getElementById('edit-name').value = nomProjet;
+            document.getElementById('edit-description').value = description;
+            document.getElementById('edit-form').action = `/projets/edit/${projetId}`;
+            document.getElementById('edit-projet-modal').classList.remove('hidden');
+        }
+
+        document.getElementById('close-edit-modal').addEventListener('click', function () {
+            document.getElementById('edit-projet-modal').classList.add('hidden');
+        });
+    </script>
+
+{% endblock %}
+
+
