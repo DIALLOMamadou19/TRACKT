@@ -17,7 +17,7 @@ task_index:
 
 # Route explicite pour les projets
 projet_index:
-    path: /projet
+    path: /projets
     controller: App\Controller\ProjectsController::index
 
 # controllers:

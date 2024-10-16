@@ -3,34 +3,54 @@
 {% block title %}Profile{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h1>Profile</h1>
-    
-    <div class="profile-card">
-        <div class="profile-photo">
-            <img src="/images/default-profile.png" alt="Profile photo">
-            <button class="btn-upload">+ upload photo</button>
-            <p>Supported formats: .jpg, .gif or .png<br>Max file size: 500k</p>
-        </div>
+    <div class="flex h-screen">
+        <!-- Menu Vertical à Gauche -->
+        {% include 'components/sidebar.html.twig' %}
 
-        <div class="profile-details">
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" value="Groupe 4" readonly>
-            </div>
+        <!-- 2. Partie Principale (Header + Contenu) -->
+        <div class="flex flex-col flex-grow px-6 pt-6">
+            {% include 'components/topbar.html.twig' %}
 
-            <div class="form-group">
-                <label>Email address</label>
-                <input type="email" value="example@gmail.com" readonly>
-                <button class="btn">Change email address</button>
-            </div>
+            <!-- Main Content -->
+            <main class="flex-grow overflow-hidden py-6 px-6 pt-4 mt-4 bg-white border rounded-lg">
 
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" value="*********" readonly>
-                <button class="btn">Change password</button>
-            </div>
+                    <h1 class="text-3xl font-bold mb-8">Profile</h1>
+                    
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-8">
+                        <!-- Section pour la photo de profil -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
+                                <img src="/images/default-profile.png" alt="Profile photo" class="w-full h-full object-cover pt-14">
+                            </div>
+                            <button class="mt-4 px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md hover:bg-gray-200">+ upload photo</button>
+                            <p class="mt-2 text-sm text-gray-500 text-center">Supported formats: .jpg, .gif or .png<br>Max file size: 500k</p>
+                        </div>
+
+                        <!-- Section pour les détails du profil -->
+                        <div class="flex-grow">
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700">Name</label>
+                                <input type="text" value="Groupe 4" readonly class="mt-1 w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500">
+                            </div>
+
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-gray-700">Email address</label>
+                                <div class="flex items-center gap-4 mt-1">
+                                    <input type="email" value="example@gmail.com" readonly class="flex-grow px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500">
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md hover:bg-gray-200">Change email address</button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Password</label>
+                                <div class="flex items-center gap-4 mt-1">
+                                    <input type="password" value="*********" readonly class="flex-grow px-4 py-2 border border-gray-300 rounded-md bg-gray-100 text-gray-500">
+                                    <button class="px-4 py-2 bg-gray-100 text-gray-800 border border-gray-300 rounded-md hover:bg-gray-200">Change password</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </main>
         </div>
     </div>
-</div>
 {% endblock %}
