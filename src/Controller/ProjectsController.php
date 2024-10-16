@@ -13,19 +13,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ProjectsController extends AbstractController
 {
-    #[Route('/projects', name: 'app_projects')]
+    #[Route('/projets', name: 'app_projets')]
     public function index(EntityManagerInterface $em): Response
     {
         // Récupérer tous les projets si nécessaire
-        $projects = $em->getRepository(Projet::class)->findAll();
+        $projets = $em->getRepository(Projet::class)->findAll();
 
-        // Pour l'instant, nous passons juste un tableau vide, mais vous pouvez passer $projects
-        return $this->render('project/projects.html.twig', [
-            'projects' => $projects,
+        // Pour l'instant, nous passons juste un tableau vide, mais vous pouvez passer $projets
+        return $this->render('projet/projets.html.twig', [
+            'projets' => $projets,
         ]);
     }
 
-    #[Route('/projects/create', name: 'app_project_create', methods: ['POST'])]
+    #[Route('/projets/create', name: 'app_projet_create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): Response
     {
         // Récupérer les données du formulaire envoyé via POST
@@ -34,54 +34,54 @@ class ProjectsController extends AbstractController
         //$assignedUsers = $request->request->get('assigned_users');
 
         // Création d'un nouveau projet
-        $project = new Projet();
-        $project->setNomProjet($name);
-        $project->setDescription($description);
-        //$project->setAssignedUsers($assignedUsers); // On suppose que c'est une chaîne ou un tableau
+        $projet = new Projet();
+        $projet->setNomProjet($name);
+        $projet->setDescription($description);
+        //$projet->setAssignedUsers($assignedUsers); // On suppose que c'est une chaîne ou un tableau
 
         // Sauvegarder le projet en base de données
-        $em->persist($project);
+        $em->persist($projet);
         $em->flush();
 
         // Rediriger vers la liste des projets après la création
-        return $this->redirectToRoute('app_projects');
+        return $this->redirectToRoute('app_projets');
     }
 
-    // ProjectsController.php
+    // projetsController.php
 
-    #[Route('/projects/delete/{id}', name: 'app_project_delete', methods: ['POST', 'DELETE'])]
+    #[Route('/projets/delete/{id}', name: 'app_projet_delete', methods: ['POST', 'DELETE'])]
     public function delete(int $id, EntityManagerInterface $em, Request $request): Response
     {
         // Récupérer le projet par son ID
-        $project = $em->getRepository(Projet::class)->find($id);
+        $projet = $em->getRepository(Projet::class)->find($id);
 
         // Vérifier si le projet existe
-        if (!$project) {
+        if (!$projet) {
             throw $this->createNotFoundException('Le projet n\'existe pas.');
         }
 
         // Si la méthode POST est utilisée (par exemple via un formulaire de suppression)
-        if ($this->isCsrfTokenValid('delete_project_' . $project->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete_projet_' . $projet->getId(), $request->request->get('_token'))) {
             // Supprimer le projet
-            $em->remove($project);
+            $em->remove($projet);
             $em->flush();
 
             // Redirection après suppression
-            return $this->redirectToRoute('app_projects');
+            return $this->redirectToRoute('app_projets');
         }
 
-        return $this->redirectToRoute('app_projects');
+        return $this->redirectToRoute('app_projets');
     }
 
 
-    #[Route('/projects/edit/{id}', name: 'app_project_edit', methods: ['GET', 'POST'])]
+    #[Route('/projets/edit/{id}', name: 'app_projet_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, EntityManagerInterface $em, int $id): Response
     {
         // Récupérer le projet par son ID
-        $project = $em->getRepository(Projet::class)->find($id);
+        $projet = $em->getRepository(Projet::class)->find($id);
 
         // Vérifier si le projet existe
-        if (!$project) {
+        if (!$projet) {
             throw $this->createNotFoundException('Le projet n\'existe pas.');
         }
 
@@ -91,19 +91,19 @@ class ProjectsController extends AbstractController
             $description = $request->request->get('description');
 
             // Mettre à jour le projet
-            $project->setNomProjet($name);
-            $project->setDescription($description);
+            $projet->setNomProjet($name);
+            $projet->setDescription($description);
 
             // Enregistrer les modifications
             $em->flush();
 
             // Rediriger vers la liste des projets après modification
-            return $this->redirectToRoute('app_projects');
+            return $this->redirectToRoute('app_projets');
         }
 
         // Afficher le formulaire de modification
-        return $this->render('project/edit.html.twig', [
-            'project' => $project,
+        return $this->render('projet/edit.html.twig', [
+            'projet' => $projet,
         ]);
     }
 

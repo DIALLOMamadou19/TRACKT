@@ -47,6 +47,7 @@ class Projet
     {
         $this->taches = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->createdAt = new \DateTime(); // Définit la date et heure actuelle
     }
 
     public function getId(): ?int
