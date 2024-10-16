@@ -1,0 +1,35 @@
+<div class="flex justify-between items-center w-full px-6 py-3 bg-white rounded-2xl border">
+    <div class="flex items-center">
+        <div class="relative">
+            <select id="projetDropdown" class="appearance-none bg-transparent border-none pr-8 focus:outline-none text-lg font-semibold text-gray-800">
+                {% for projet in projets %}
+                    <option value="{{ projet.id }}" {% if projet.id == currentProjet.id %}selected{% endif %}>
+                        {{ projet.nomProjet }}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                </svg>
+            </div> 
+        </div>
+    </div>
+    <div class="flex items-center">
+        <a href="#" class="mr-4 text-gray-600 hover:text-gray-800">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+        </a>
+        <div class="flex items-center">
+            <span class="mr-2 text-sm text-gray-600">Mon Compte</span>
+            <div class="w-8 h-8 bg-yellow-300 border-black border rounded-full"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('projetDropdown').addEventListener('change', function() {
+        window.location.href = '{{ path('app_tasks') }}/' + this.value;
+    });
+</script>
