@@ -16,8 +16,8 @@ task_index:
     controller: App\Controller\TaskController::index
 
 projet_index:
-    path: /projet
-    controller: App\Controller\ProjetController::index
+    path: /projets
+    controller: App\Controller\ProjectsController::index
 
 # controllers:
 #     resource:
